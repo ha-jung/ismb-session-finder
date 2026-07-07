@@ -334,7 +334,7 @@ function renderSessions(matches, options = {}) {
 
 function renderSearchAnswer(query, matches) {
   if (!matches.length) {
-    answerEl.textContent = `"${query}"에 맞는 세션을 찾지 못했습니다. 필터를 줄이거나 더 넓은 키워드로 검색해보세요.`;
+    answerEl.textContent = `No sessions found for "${query}". Try fewer filters or broader keywords.`;
     resultsEl.innerHTML = "";
     return;
   }
@@ -407,7 +407,7 @@ function runSearch(query) {
   activeQuery = cleanQuery;
 
   if (!cleanQuery) {
-    answerEl.textContent = "검색어를 입력하면 관련 title, 시간, 방, track을 찾아드립니다.";
+    answerEl.textContent = "Enter a keyword query to search titles, abstracts, keywords, authors, tracks, and rooms.";
     resultsEl.innerHTML = "";
     return;
   }
