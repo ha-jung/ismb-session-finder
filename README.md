@@ -1,6 +1,6 @@
 # ISMB 2026 Session Finder
 
-Static web app for searching ISMB 2026 sessions by keyword, time, track, and room.
+Static web app for searching ISMB 2026 sessions by keyword, time, track, room, abstract, author, and extracted keywords.
 
 ## Features
 
@@ -22,8 +22,10 @@ Recommended setup:
    - `index.html`
    - `app.js`
    - `styles.css`
-   - `ISMB2026_track_title.csv`
+   - `sessions.json`
+   - `ISMB2026_schedule_abstracts_keywords.xlsx`
    - `.nojekyll`
+   - `.gitignore`
    - `README.md`
 3. Go to repository `Settings` > `Pages`.
 4. Set source to `Deploy from a branch`.

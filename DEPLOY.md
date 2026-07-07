@@ -10,8 +10,10 @@ This folder is a static website. It can be deployed without a backend.
    - `index.html`
    - `app.js`
    - `styles.css`
-   - `ISMB2026_track_title.csv`
+   - `sessions.json`
+   - `ISMB2026_schedule_abstracts_keywords.xlsx`
    - `.nojekyll`
+   - `.gitignore`
    - `README.md`
 
 3. Open repository `Settings` > `Pages`.
@@ -37,7 +39,8 @@ Keep these files together:
 - `index.html`
 - `app.js`
 - `styles.css`
-- `ISMB2026_track_title.csv`
+- `sessions.json`
+- `ISMB2026_schedule_abstracts_keywords.xlsx`
 - `.nojekyll`
 - `README.md`
 - `netlify.toml`

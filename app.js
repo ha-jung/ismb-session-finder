@@ -1,4 +1,4 @@
-const CSV_PATH = "./ISMB2026_track_title.csv";
+const DATA_PATH = "./sessions.json";
 const MAX_RESULTS = 40;
 const STORAGE_KEY = "ismb2026_saved_sessions";
 const EXCLUDED_DATES = new Set(["2026-07-06", "2026-07-07"]);
@@ -44,48 +44,6 @@ const stopWords = new Set([
   "to",
   "with",
 ]);
-
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let cell = "";
-  let quoted = false;
-
-  for (let i = 0; i < text.length; i += 1) {
-    const char = text[i];
-    const next = text[i + 1];
-
-    if (char === '"' && quoted && next === '"') {
-      cell += '"';
-      i += 1;
-    } else if (char === '"') {
-      quoted = !quoted;
-    } else if (char === "," && !quoted) {
-      row.push(cell);
-      cell = "";
-    } else if ((char === "\n" || char === "\r") && !quoted) {
-      if (char === "\r" && next === "\n") i += 1;
-      row.push(cell);
-      if (row.some((value) => value.trim() !== "")) rows.push(row);
-      row = [];
-      cell = "";
-    } else {
-      cell += char;
-    }
-  }
-
-  if (cell || row.length) {
-    row.push(cell);
-    rows.push(row);
-  }
-
-  const headers = rows.shift().map((header) => header.replace(/^\uFEFF/, ""));
-  return rows.map((values, index) => {
-    const session = Object.fromEntries(headers.map((header, i) => [header, values[i] || ""]));
-    session.id = `${session.date}|${session.start_time}|${session.end_time}|${session.room}|${session.title}|${index}`;
-    return session;
-  });
-}
 
 function normalize(value) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -194,7 +152,19 @@ function populateControls() {
 }
 
 function sessionText(session) {
-  return normalize(`${session.title} ${session.track} ${session.room} ${session.date}`);
+  return normalize(
+    [
+      session.title,
+      session.track,
+      session.room,
+      session.date,
+      session.presenter,
+      session.authors,
+      session.format,
+      session.keywords,
+      session.abstract,
+    ].join(" "),
+  );
 }
 
 function queryMatches(session, query) {
@@ -218,16 +188,25 @@ function scoreSession(session, rawQuery) {
   const track = normalize(session.track);
   const room = normalize(session.room);
   const date = normalize(session.date);
-  const haystack = `${title} ${track} ${room} ${date}`;
+  const presenter = normalize(session.presenter || "");
+  const authors = normalize(session.authors || "");
+  const keywords = normalize(session.keywords || "");
+  const abstract = normalize(session.abstract || "");
+  const haystack = `${title} ${track} ${room} ${date} ${presenter} ${authors} ${keywords} ${abstract}`;
   const phrase = normalize(rawQuery);
   let score = 0;
 
   if (phrase && title.includes(phrase)) score += 18;
+  if (phrase && keywords.includes(phrase)) score += 14;
   if (phrase && track.includes(phrase)) score += 10;
+  if (phrase && abstract.includes(phrase)) score += 6;
 
   for (const token of tokenize(rawQuery)) {
     if (title.includes(token)) score += 8;
+    if (keywords.includes(token)) score += 6;
     if (track.includes(token)) score += 4;
+    if (presenter.includes(token) || authors.includes(token)) score += 4;
+    if (abstract.includes(token)) score += 3;
     if (room.includes(token)) score += 2;
     if (date.includes(token)) score += 2;
     if (haystack.includes(token)) score += 1;
@@ -280,6 +259,19 @@ function highlight(value, query) {
   return html;
 }
 
+function snippet(value, query, maxLength = 320) {
+  if (!value) return "";
+  const cleanValue = value.replace(/\s+/g, " ").trim();
+  const tokens = tokenize(query);
+  const normalized = normalize(cleanValue);
+  const hit = tokens.map((token) => normalized.indexOf(token)).find((index) => index >= 0);
+  const start = hit && hit > 80 ? Math.max(0, hit - 90) : 0;
+  const end = Math.min(cleanValue.length, start + maxLength);
+  const prefix = start > 0 ? "... " : "";
+  const suffix = end < cleanValue.length ? " ..." : "";
+  return `${prefix}${cleanValue.slice(start, end)}${suffix}`;
+}
+
 function renderSessions(matches, options = {}) {
   const query = options.query || "";
   const showConflicts = options.showConflicts || false;
@@ -290,6 +282,16 @@ function renderSessions(matches, options = {}) {
       const conflicts = showConflicts ? getConflictTitles(session) : [];
       const title = query ? highlight(session.title, query) : escapeHtml(session.title);
       const track = query ? highlight(session.track, query) : escapeHtml(session.track);
+      const keywords = query
+        ? highlight(session.keywords || "", query)
+        : escapeHtml(session.keywords || "");
+      const abstract = snippet(session.abstract || "", query);
+      const abstractHtml = query ? highlight(abstract, query) : escapeHtml(abstract);
+      const fullAbstract = query
+        ? highlight(session.abstract || "", query)
+        : escapeHtml(session.abstract || "");
+      const people = [session.presenter, session.format].filter(Boolean).join(" · ");
+      const authors = session.authors ? escapeHtml(session.authors) : "";
 
       return `
         <article class="result-card">
@@ -302,9 +304,23 @@ function renderSessions(matches, options = {}) {
           <div class="meta">
             <span class="pill">${formatDate(session.date)}</span>
             <span class="pill">${formatTime(session.start_time)}-${formatTime(session.end_time)}</span>
-            <span class="pill">${escapeHtml(session.room)}</span>
+            ${session.room ? `<span class="pill">${escapeHtml(session.room)}</span>` : ""}
           </div>
           <div class="track">${track}</div>
+          ${people ? `<div class="presenter">${escapeHtml(people)}</div>` : ""}
+          ${keywords ? `<div class="keywords">${keywords}</div>` : ""}
+          ${
+            abstract
+              ? `
+                <p class="abstract">${abstractHtml}</p>
+                <details class="abstract-details">
+                  <summary>Full abstract</summary>
+                  ${authors ? `<div class="authors">${authors}</div>` : ""}
+                  <p>${fullAbstract}</p>
+                </details>
+              `
+              : ""
+          }
           ${
             conflicts.length
               ? `<div class="conflict">Time conflict with: ${escapeHtml(conflicts.join("; "))}</div>`
@@ -444,15 +460,15 @@ function renderSchedule() {
 
 async function boot() {
   try {
-    const response = await fetch(CSV_PATH);
-    if (!response.ok) throw new Error(`CSV load failed: ${response.status}`);
-    const text = await response.text();
-    sessions = parseCsv(text);
+    const response = await fetch(DATA_PATH);
+    if (!response.ok) throw new Error(`Data load failed: ${response.status}`);
+    sessions = await response.json();
     populateControls();
-    statusEl.textContent = `${conferenceSessions().length} conference sessions loaded`;
+    const abstractCount = conferenceSessions().filter((session) => session.abstract).length;
+    statusEl.textContent = `${conferenceSessions().length} conference sessions loaded · ${abstractCount} abstracts`;
     runSearch("protein language model");
   } catch (error) {
-    statusEl.textContent = "Could not load the CSV. Please run this page through a local server.";
+    statusEl.textContent = "Could not load the schedule data. Please run this page through a local server.";
     answerEl.textContent = error.message;
   }
 }
