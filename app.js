@@ -24,6 +24,7 @@ let sessions = [];
 let trackKeywords = {};
 let savedIds = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
 let activeQuery = "";
+let activeExactSearch = false;
 
 const stopWords = new Set([
   "a",
@@ -56,6 +57,14 @@ function tokenize(value) {
   return normalize(value)
     .split(/\s+/)
     .filter((token) => token.length > 1 && !stopWords.has(token));
+}
+
+function containsTerm(text, term) {
+  const normalizedText = normalize(text);
+  const normalizedTerm = normalize(term);
+  if (!normalizedTerm) return false;
+  const pattern = normalizedTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^| )${pattern}( |$)`).test(normalizedText);
 }
 
 function formatDate(dateValue) {
@@ -194,7 +203,7 @@ function sessionText(session) {
   );
 }
 
-function queryMatches(session, query) {
+function queryMatches(session, query, exact = false) {
   const cleanQuery = query.trim();
   if (!cleanQuery) return true;
 
@@ -205,12 +214,15 @@ function queryMatches(session, query) {
     const andParts = group.split(/\s+AND\s+/i);
     return andParts.every((part) => {
       const tokens = tokenize(part);
-      return tokens.length > 0 && tokens.every((token) => text.includes(token));
+      if (!tokens.length) return false;
+      return exact
+        ? tokens.every((token) => containsTerm(text, token))
+        : tokens.every((token) => text.includes(token));
     });
   });
 }
 
-function scoreSession(session, rawQuery) {
+function scoreSession(session, rawQuery, exact = false) {
   const title = normalize(session.title);
   const track = normalize(session.track);
   const room = normalize(session.room);
@@ -222,21 +234,22 @@ function scoreSession(session, rawQuery) {
   const haystack = `${title} ${track} ${room} ${date} ${presenter} ${authors} ${keywords} ${abstract}`;
   const phrase = normalize(rawQuery);
   let score = 0;
+  const hasPhrase = (text, value) => (exact ? containsTerm(text, value) : text.includes(value));
 
-  if (phrase && title.includes(phrase)) score += 18;
-  if (phrase && keywords.includes(phrase)) score += 14;
-  if (phrase && track.includes(phrase)) score += 10;
-  if (phrase && abstract.includes(phrase)) score += 6;
+  if (phrase && hasPhrase(title, phrase)) score += 18;
+  if (phrase && hasPhrase(keywords, phrase)) score += 14;
+  if (phrase && hasPhrase(track, phrase)) score += 10;
+  if (phrase && hasPhrase(abstract, phrase)) score += 6;
 
   for (const token of tokenize(rawQuery)) {
-    if (title.includes(token)) score += 8;
-    if (keywords.includes(token)) score += 6;
-    if (track.includes(token)) score += 4;
-    if (presenter.includes(token) || authors.includes(token)) score += 4;
-    if (abstract.includes(token)) score += 3;
-    if (room.includes(token)) score += 2;
-    if (date.includes(token)) score += 2;
-    if (haystack.includes(token)) score += 1;
+    if (hasPhrase(title, token)) score += 8;
+    if (hasPhrase(keywords, token)) score += 6;
+    if (hasPhrase(track, token)) score += 4;
+    if (hasPhrase(presenter, token) || hasPhrase(authors, token)) score += 4;
+    if (hasPhrase(abstract, token)) score += 3;
+    if (hasPhrase(room, token)) score += 2;
+    if (hasPhrase(date, token)) score += 2;
+    if (hasPhrase(haystack, token)) score += 1;
   }
 
   return score;
@@ -263,15 +276,19 @@ function sortSessions(list, mode = sortSelect.value) {
   });
 }
 
-function search(query) {
+function search(query, exact = false) {
   return sortSessions(
     applyFilters(
       sessions
         .filter((session) => !EXCLUDED_DATES.has(session.date))
-        .map((session) => ({ ...session, score: scoreSession(session, query) }))
-        .filter((session) => queryMatches(session, query)),
+        .map((session) => ({ ...session, score: scoreSession(session, query, exact) }))
+        .filter((session) => queryMatches(session, query, exact)),
     ),
   ).slice(0, MAX_RESULTS);
+}
+
+function filteredSessions() {
+  return sortSessions(applyFilters(conferenceSessions()));
 }
 
 function highlight(value, query) {
@@ -380,6 +397,29 @@ function renderSearchAnswer(query, matches) {
   renderSessions(matches, { query });
 }
 
+function renderFilteredSessions() {
+  const matches = filteredSessions();
+  const filters = [trackFilter.value, roomFilter.value].filter(Boolean);
+
+  if (!filters.length) {
+    answerEl.textContent = "Enter a keyword query, choose a track, or choose a date and time to find sessions.";
+    resultsEl.innerHTML = "";
+    return;
+  }
+
+  if (!matches.length) {
+    answerEl.textContent = `No sessions found for ${filters.join(" · ")}. Try fewer filters.`;
+    resultsEl.innerHTML = "";
+    return;
+  }
+
+  answerEl.innerHTML = `
+    <strong>${matches.length} sessions found</strong>
+    for <strong>${escapeHtml(filters.join(" · "))}</strong>.
+  `;
+  renderSessions(matches);
+}
+
 function sessionsAtTime(date, time, query = "") {
   const selected = timeToMinutes(`${time}:00`);
 
@@ -421,6 +461,7 @@ function renderTimeResults(date, time, matches, query = "") {
 function runTimeSearch() {
   const cleanQuery = queryInput.value.trim();
   activeQuery = cleanQuery;
+  activeExactSearch = false;
   renderTimeResults(
     dateSelect.value,
     timeSelect.value,
@@ -429,9 +470,11 @@ function runTimeSearch() {
   );
 }
 
-function runSearch(query) {
+function runSearch(query, options = {}) {
   const cleanQuery = query.trim();
+  const exact = Boolean(options.exact);
   activeQuery = cleanQuery;
+  activeExactSearch = exact;
 
   if (!cleanQuery) {
     answerEl.textContent = "Enter a keyword query to search titles, abstracts, keywords, authors, tracks, and rooms.";
@@ -439,7 +482,7 @@ function runSearch(query) {
     return;
   }
 
-  renderSearchAnswer(cleanQuery, search(cleanQuery));
+  renderSearchAnswer(cleanQuery, search(cleanQuery, exact));
 }
 
 function runNowMode() {
@@ -451,6 +494,7 @@ function runNowMode() {
     ? `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
     : timeSelect.value;
   const cleanQuery = queryInput.value.trim();
+  activeExactSearch = false;
   const active = sessionsAtTime(date, time, cleanQuery);
 
   answerEl.innerHTML = `
@@ -510,13 +554,13 @@ async function boot() {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  runSearch(queryInput.value);
+  runSearch(queryInput.value, { exact: false });
 });
 
 quickButtons.forEach((button) => {
   button.addEventListener("click", () => {
     queryInput.value = button.dataset.query;
-    runSearch(button.dataset.query);
+    runSearch(button.dataset.query, { exact: false });
   });
 });
 
@@ -525,7 +569,7 @@ hotKeywordsList.addEventListener("click", (event) => {
   if (!button) return;
 
   queryInput.value = button.dataset.hotKeyword;
-  runSearch(button.dataset.hotKeyword);
+  runSearch(button.dataset.hotKeyword, { exact: true });
 });
 
 timeForm.addEventListener("submit", (event) => {
@@ -535,15 +579,27 @@ timeForm.addEventListener("submit", (event) => {
 
 trackFilter.addEventListener("change", () => {
   populateHotKeywords();
-  if (activeQuery) runSearch(activeQuery);
+  if (activeQuery) {
+    runSearch(activeQuery, { exact: activeExactSearch });
+  } else {
+    renderFilteredSessions();
+  }
 });
 
 roomFilter.addEventListener("change", () => {
-  if (activeQuery) runSearch(activeQuery);
+  if (activeQuery) {
+    runSearch(activeQuery, { exact: activeExactSearch });
+  } else {
+    renderFilteredSessions();
+  }
 });
 
 sortSelect.addEventListener("change", () => {
-  if (activeQuery) runSearch(activeQuery);
+  if (activeQuery) {
+    runSearch(activeQuery, { exact: activeExactSearch });
+  } else {
+    renderFilteredSessions();
+  }
 });
 
 nowButton.addEventListener("click", runNowMode);
@@ -562,7 +618,7 @@ resultsEl.addEventListener("click", (event) => {
   saveSchedule();
 
   if (activeQuery) {
-    runSearch(activeQuery);
+    runSearch(activeQuery, { exact: activeExactSearch });
   } else if (answerEl.textContent.includes("saved sessions") || answerEl.textContent.includes("My Schedule")) {
     renderSchedule();
   } else {

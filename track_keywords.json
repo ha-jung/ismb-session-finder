@@ -1,174 +1,399 @@
 {
   "__all__": [
     {
-      "keyword": "single cell",
-      "count": 31
-    },
-    {
-      "keyword": "machine learning",
-      "count": 12
+      "keyword": "microbiome",
+      "count": 25
     },
     {
       "keyword": "protein function",
-      "count": 8
+      "count": 17
     },
     {
-      "keyword": "cell type",
-      "count": 12
+      "keyword": "single cell",
+      "count": 87
     },
     {
-      "keyword": "multi omics",
-      "count": 12
-    },
-    {
-      "keyword": "spatial transcriptomics",
-      "count": 12
-    },
-    {
-      "keyword": "deep learning",
-      "count": 10
-    },
-    {
-      "keyword": "knowledge graph",
-      "count": 9
-    },
-    {
-      "keyword": "artificial intelligence",
-      "count": 4
+      "keyword": "machine learning",
+      "count": 71
     },
     {
       "keyword": "gene expression",
-      "count": 4
+      "count": 73
     },
     {
-      "keyword": "metagenomic samples",
-      "count": 4
+      "keyword": "cell type",
+      "count": 62
+    },
+    {
+      "keyword": "deep learning",
+      "count": 51
+    },
+    {
+      "keyword": "variant interpretation",
+      "count": 11
+    },
+    {
+      "keyword": "multi omics",
+      "count": 34
+    },
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 33
+    },
+    {
+      "keyword": "knowledge graph",
+      "count": 28
+    },
+    {
+      "keyword": "rna seq",
+      "count": 27
+    },
+    {
+      "keyword": "artificial intelligence",
+      "count": 19
+    },
+    {
+      "keyword": "protein interaction",
+      "count": 19
+    },
+    {
+      "keyword": "drug discovery",
+      "count": 16
+    },
+    {
+      "keyword": "precision medicine",
+      "count": 14
+    },
+    {
+      "keyword": "protein structure",
+      "count": 14
+    },
+    {
+      "keyword": "gene regulation",
+      "count": 13
+    },
+    {
+      "keyword": "variant effect",
+      "count": 10
+    },
+    {
+      "keyword": "open source",
+      "count": 9
+    },
+    {
+      "keyword": "multimodal",
+      "count": 15
     },
     {
       "keyword": "protein design",
+      "count": 7
+    },
+    {
+      "keyword": "metagenomics",
+      "count": 11
+    },
+    {
+      "keyword": "long read",
+      "count": 10
+    },
+    {
+      "keyword": "cell type specific",
+      "count": 8
+    },
+    {
+      "keyword": "large scale",
+      "count": 7
+    },
+    {
+      "keyword": "quantum computing",
+      "count": 7
+    },
+    {
+      "keyword": "genome editing",
+      "count": 5
+    },
+    {
+      "keyword": "genomic medicine",
+      "count": 5
+    },
+    {
+      "keyword": "metabolic pathway",
+      "count": 5
+    }
+  ],
+  "3DSIG: Structural Bioinformatics and Computational Biophysics": [
+    {
+      "keyword": "protein structure",
+      "count": 7
+    },
+    {
+      "keyword": "protein design",
+      "count": 4
+    },
+    {
+      "keyword": "deep learning",
+      "count": 13
+    },
+    {
+      "keyword": "protein interaction",
+      "count": 5
+    },
+    {
+      "keyword": "protein function",
       "count": 3
     },
     {
-      "keyword": "microbiome",
+      "keyword": "variant effect",
       "count": 3
     },
     {
-      "keyword": "extended break",
-      "count": 3
+      "keyword": "cryo em",
+      "count": 2
     },
     {
-      "keyword": "knowledge graphs",
-      "count": 3
-    },
-    {
-      "keyword": "life science",
-      "count": 3
-    },
-    {
-      "keyword": "morning introduction morning",
-      "count": 3
+      "keyword": "precision medicine",
+      "count": 2
     },
     {
       "keyword": "drug discovery",
       "count": 2
     },
     {
-      "keyword": "metabolic pathway",
+      "keyword": "rna seq",
       "count": 2
     },
     {
-      "keyword": "network biology",
+      "keyword": "machine learning",
       "count": 2
     },
     {
-      "keyword": "protein structure",
+      "keyword": "gene expression",
       "count": 2
     },
     {
-      "keyword": "variant effect",
-      "count": 2
-    },
-    {
-      "keyword": "active learning",
-      "count": 2
-    },
-    {
-      "keyword": "bio ontologies",
-      "count": 2
-    },
-    {
-      "keyword": "bioinformatics core facilities",
-      "count": 2
-    },
-    {
-      "keyword": "biomedical informatics",
-      "count": 2
-    },
-    {
-      "keyword": "competency hub",
-      "count": 2
-    },
-    {
-      "keyword": "computational biology",
-      "count": 2
-    },
-    {
-      "keyword": "copy number",
-      "count": 2
-    },
-    {
-      "keyword": "decision making",
-      "count": 2
-    }
-  ],
-  "3DSIG: Structural Bioinformatics and Computational Biophysics": [
-    {
-      "keyword": "protein design",
-      "count": 2
-    },
-    {
-      "keyword": "deep learning",
+      "keyword": "single cell",
       "count": 2
     }
   ],
   "BioInfo-Core": [
     {
+      "keyword": "bioinformatics core",
+      "count": 2
+    },
+    {
       "keyword": "bioinformatics core facilities",
+      "count": 2
+    },
+    {
+      "keyword": "core facilities",
+      "count": 2
+    },
+    {
+      "keyword": "multi omics",
       "count": 2
     }
   ],
-  "Bioinformatics in the USA": [],
+  "Bioinformatics in the USA": [
+    {
+      "keyword": "computational biology",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 4
+    },
+    {
+      "keyword": "multi omics",
+      "count": 2
+    },
+    {
+      "keyword": "cell type",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
+      "count": 2
+    }
+  ],
   "BioVis: Biological Data Visualizations": [
     {
       "keyword": "spatial transcriptomics",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 3
+    },
+    {
+      "keyword": "cell type",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
       "count": 2
     }
   ],
   "BOKR: Bio-Ontologies and Knowledge Representation": [
     {
       "keyword": "knowledge graph",
+      "count": 8
+    },
+    {
+      "keyword": "gene sets",
+      "count": 2
+    },
+    {
+      "keyword": "multimodal",
+      "count": 2
+    },
+    {
+      "keyword": "cell type",
       "count": 3
+    },
+    {
+      "keyword": "gene expression",
+      "count": 3
+    },
+    {
+      "keyword": "machine learning",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
+      "count": 2
     }
   ],
   "BOSC: Bioinformatics Open Source Conference": [
     {
-      "keyword": "knowledge graph",
-      "count": 2
-    }
-  ],
-  "CAMDA: Critical Assessment of Massive Data Analysis": [
+      "keyword": "knowledge graphs",
+      "count": 3
+    },
     {
-      "keyword": "gut microbiome",
+      "keyword": "knowledge graph",
+      "count": 5
+    },
+    {
+      "keyword": "open science",
+      "count": 2
+    },
+    {
+      "keyword": "precision medicine",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 4
+    },
+    {
+      "keyword": "rna seq",
       "count": 2
     },
     {
       "keyword": "single cell",
       "count": 3
+    },
+    {
+      "keyword": "cell type",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 2
+    }
+  ],
+  "CAMDA: Critical Assessment of Massive Data Analysis": [
+    {
+      "keyword": "microbiome",
+      "count": 7
+    },
+    {
+      "keyword": "rna seq",
+      "count": 7
+    },
+    {
+      "keyword": "gut microbiome",
+      "count": 3
+    },
+    {
+      "keyword": "membership inference attacks",
+      "count": 3
+    },
+    {
+      "keyword": "antimicrobial resistance",
+      "count": 2
+    },
+    {
+      "keyword": "bulk rna seq",
+      "count": 2
+    },
+    {
+      "keyword": "membership inference",
+      "count": 2
+    },
+    {
+      "keyword": "single cell rna",
+      "count": 2
+    },
+    {
+      "keyword": "synthetic gene expression",
+      "count": 2
+    },
+    {
+      "keyword": "synthetic single cell",
+      "count": 2
+    },
+    {
+      "keyword": "deep learning",
+      "count": 3
+    },
+    {
+      "keyword": "single cell",
+      "count": 4
+    },
+    {
+      "keyword": "machine learning",
+      "count": 3
+    },
+    {
+      "keyword": "gene expression",
+      "count": 3
+    },
+    {
+      "keyword": "cell type",
+      "count": 2
     }
   ],
   "CompMS: Computational Mass Spectrometry": [
     {
+      "keyword": "novo peptide",
+      "count": 2
+    },
+    {
       "keyword": "novo peptide sequencing",
+      "count": 2
+    },
+    {
+      "keyword": "open search",
+      "count": 2
+    },
+    {
+      "keyword": "peptide sequencing",
+      "count": 2
+    },
+    {
+      "keyword": "search space",
+      "count": 2
+    },
+    {
+      "keyword": "multi omics",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
       "count": 2
     }
   ],
@@ -176,47 +401,252 @@
   "CSI: Computational Systems Immunology": [
     {
       "keyword": "single cell",
+      "count": 8
+    },
+    {
+      "keyword": "gene regulation",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 5
+    },
+    {
+      "keyword": "cell type",
+      "count": 3
+    },
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
       "count": 3
     }
   ],
   "Distinguished Keynotes": [
     {
+      "keyword": "introduction morning",
+      "count": 3
+    },
+    {
+      "keyword": "morning introduction",
+      "count": 3
+    },
+    {
       "keyword": "morning introduction morning",
       "count": 3
+    },
+    {
+      "keyword": "ceremony conference",
+      "count": 2
+    },
+    {
+      "keyword": "multimodal",
+      "count": 2
     }
   ],
   "DREAM Challenges": [
     {
+      "keyword": "command line omics",
+      "count": 2
+    },
+    {
+      "keyword": "end omics workflow",
+      "count": 2
+    },
+    {
+      "keyword": "end to end omics workflow",
+      "count": 2
+    },
+    {
+      "keyword": "llm agents",
+      "count": 2
+    },
+    {
+      "keyword": "reliable llm",
+      "count": 2
+    },
+    {
+      "keyword": "standard command line",
+      "count": 2
+    },
+    {
+      "keyword": "rna seq",
+      "count": 4
+    },
+    {
+      "keyword": "drug discovery",
+      "count": 2
+    },
+    {
+      "keyword": "artificial intelligence",
+      "count": 2
+    },
+    {
       "keyword": "multi omics",
       "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 3
+    },
+    {
+      "keyword": "single cell",
+      "count": 3
     }
   ],
   "Education: Computational Biology and Bioinformatics Education and Training": [
     {
+      "keyword": "bioinformatics capacity",
+      "count": 2
+    },
+    {
+      "keyword": "latin america",
+      "count": 2
+    },
+    {
+      "keyword": "training program",
+      "count": 2
+    },
+    {
       "keyword": "artificial intelligence",
+      "count": 3
+    },
+    {
+      "keyword": "gene expression",
       "count": 2
     }
   ],
   "Equity and Diversity in CompBio Research": [],
   "EvolCompGen: Evolution & Comparative Genomics": [
     {
-      "keyword": "machine learning",
-      "count": 2
-    }
-  ],
-  "Function: Gene and Protein Function Annotation": [],
-  "GenCompBio: General Computational Biology": [
+      "keyword": "species tree",
+      "count": 3
+    },
     {
-      "keyword": "active learning",
+      "keyword": "sequence alignment",
       "count": 2
+    },
+    {
+      "keyword": "phylogenetics",
+      "count": 2
+    },
+    {
+      "keyword": "bacterial host",
+      "count": 2
+    },
+    {
+      "keyword": "gene tree",
+      "count": 2
+    },
+    {
+      "keyword": "gene trees",
+      "count": 2
+    },
+    {
+      "keyword": "maximum likelihood",
+      "count": 2
+    },
+    {
+      "keyword": "multi species coalescent",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 4
     },
     {
       "keyword": "single cell",
       "count": 4
     },
     {
-      "keyword": "cell type",
+      "keyword": "gene expression",
       "count": 2
+    }
+  ],
+  "Function: Gene and Protein Function Annotation": [
+    {
+      "keyword": "protein function prediction",
+      "count": 3
+    },
+    {
+      "keyword": "graph neural network",
+      "count": 2
+    },
+    {
+      "keyword": "function prediction",
+      "count": 2
+    },
+    {
+      "keyword": "positive unlabeled",
+      "count": 2
+    },
+    {
+      "keyword": "variation leveraged phenomic",
+      "count": 2
+    },
+    {
+      "keyword": "protein structure",
+      "count": 2
+    },
+    {
+      "keyword": "knowledge graph",
+      "count": 3
+    },
+    {
+      "keyword": "multi omics",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 3
+    },
+    {
+      "keyword": "deep learning",
+      "count": 2
+    }
+  ],
+  "GenCompBio: General Computational Biology": [
+    {
+      "keyword": "active learning",
+      "count": 2
+    },
+    {
+      "keyword": "drug response",
+      "count": 2
+    },
+    {
+      "keyword": "long read sequencing",
+      "count": 2
+    },
+    {
+      "keyword": "cell type",
+      "count": 6
+    },
+    {
+      "keyword": "drug discovery",
+      "count": 2
+    },
+    {
+      "keyword": "deep learning",
+      "count": 4
+    },
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 3
+    },
+    {
+      "keyword": "single cell",
+      "count": 5
+    },
+    {
+      "keyword": "machine learning",
+      "count": 4
+    },
+    {
+      "keyword": "gene expression",
+      "count": 4
     },
     {
       "keyword": "multi omics",
@@ -225,39 +655,169 @@
   ],
   "HiTSeq: High Throughput Sequencing Algorithms & Applications": [
     {
+      "keyword": "long read",
+      "count": 3
+    },
+    {
+      "keyword": "allele specific",
+      "count": 2
+    },
+    {
       "keyword": "copy number",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
+      "count": 6
+    },
+    {
+      "keyword": "gene expression",
+      "count": 5
+    },
+    {
+      "keyword": "spatial transcriptomics",
       "count": 2
     },
     {
       "keyword": "cell type",
       "count": 2
+    }
+  ],
+  "Industry Workshop": [
+    {
+      "keyword": "genomic medicine",
+      "count": 3
     },
     {
-      "keyword": "single cell",
+      "keyword": "minute panel opens",
+      "count": 3
+    },
+    {
+      "keyword": "share candid perspectives",
+      "count": 3
+    },
+    {
+      "keyword": "three expert panels",
+      "count": 3
+    },
+    {
+      "keyword": "top pharma biotech",
+      "count": 3
+    },
+    {
+      "keyword": "drug discovery",
       "count": 3
     }
   ],
-  "Industry Workshop": [],
   "International Conference on Biological and Biomedical Ontology 2026": [],
   "iRNA: Integrative RNA Biology": [
     {
-      "keyword": "single cell",
-      "count": 4
-    }
-  ],
-  "MICROBIOME": [],
-  "MLCSB: Machine Learning in Computational and Systems Biology": [
-    {
-      "keyword": "spatial transcriptomics",
+      "keyword": "long read",
       "count": 4
     },
     {
+      "keyword": "rna sequencing",
+      "count": 3
+    },
+    {
+      "keyword": "cell type",
+      "count": 8
+    },
+    {
+      "keyword": "cell resolution",
+      "count": 2
+    },
+    {
+      "keyword": "single cell resolution",
+      "count": 2
+    },
+    {
+      "keyword": "rna seq",
+      "count": 3
+    },
+    {
       "keyword": "deep learning",
+      "count": 4
+    },
+    {
+      "keyword": "single cell",
+      "count": 5
+    },
+    {
+      "keyword": "gene expression",
+      "count": 4
+    },
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 3
+    }
+  ],
+  "MICROBIOME": [
+    {
+      "keyword": "metagenomics",
+      "count": 5
+    },
+    {
+      "keyword": "multi sample",
+      "count": 2
+    },
+    {
+      "keyword": "taxonomic classification",
+      "count": 2
+    },
+    {
+      "keyword": "long read",
+      "count": 2
+    }
+  ],
+  "MLCSB: Machine Learning in Computational and Systems Biology": [
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 9
+    },
+    {
+      "keyword": "cell type",
+      "count": 9
+    },
+    {
+      "keyword": "single cell foundation",
+      "count": 2
+    },
+    {
+      "keyword": "tissue states",
       "count": 2
     },
     {
       "keyword": "single cell",
+      "count": 9
+    },
+    {
+      "keyword": "cell type specific",
+      "count": 2
+    },
+    {
+      "keyword": "drug discovery",
+      "count": 2
+    },
+    {
+      "keyword": "multimodal",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 4
+    },
+    {
+      "keyword": "deep learning",
       "count": 3
+    },
+    {
+      "keyword": "rna seq",
+      "count": 2
     }
   ],
   "NetBio: Network Biology": [
@@ -266,51 +826,318 @@
       "count": 2
     },
     {
-      "keyword": "knowledge graph",
+      "keyword": "cancer driver",
       "count": 2
     },
     {
-      "keyword": "single cell",
+      "keyword": "protein function",
       "count": 2
-    }
-  ],
-  "NIH/ODSS": [
+    },
     {
-      "keyword": "extended break",
+      "keyword": "protein interaction",
+      "count": 3
+    },
+    {
+      "keyword": "protein structure",
       "count": 2
-    }
-  ],
-  "Nvidia Workshop": [],
-  "Pathogen Data Network Forum": [],
-  "Publishing Session": [],
-  "Quantum for Life Sciences": [],
-  "RegSys: Regulatory and Systems Genomics": [
+    },
+    {
+      "keyword": "knowledge graph",
+      "count": 3
+    },
     {
       "keyword": "cell type",
-      "count": 3
-    }
-  ],
-  "SCS: Student Council Symposium": [],
-  "SysMod: Computational Modeling of Biological Systems": [
+      "count": 5
+    },
     {
       "keyword": "single cell",
-      "count": 3
-    }
-  ],
-  "Tech Track": [],
-  "Text Mining: Text Mining for Healthcare and Biology": [],
-  "TransMed: Translational Medicine Informatics & Applications": [],
-  "Tutorials": [
+      "count": 6
+    },
     {
-      "keyword": "metagenomic samples",
+      "keyword": "deep learning",
       "count": 4
+    },
+    {
+      "keyword": "multimodal",
+      "count": 2
     },
     {
       "keyword": "machine learning",
       "count": 4
     },
     {
+      "keyword": "spatial transcriptomics",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 3
+    }
+  ],
+  "NIH/ODSS": [
+    {
+      "keyword": "break extended",
+      "count": 2
+    },
+    {
+      "keyword": "break extended break",
+      "count": 2
+    },
+    {
+      "keyword": "extended break",
+      "count": 2
+    },
+    {
+      "keyword": "extended break extended",
+      "count": 2
+    },
+    {
+      "keyword": "multimodal",
+      "count": 3
+    },
+    {
+      "keyword": "artificial intelligence",
+      "count": 2
+    }
+  ],
+  "Nvidia Workshop": [],
+  "Pathogen Data Network Forum": [
+    {
+      "keyword": "artificial intelligence",
+      "count": 2
+    }
+  ],
+  "Publishing Session": [
+    {
+      "keyword": "machine learning",
+      "count": 2
+    }
+  ],
+  "Quantum for Life Sciences": [
+    {
+      "keyword": "quantum computing",
+      "count": 2
+    },
+    {
       "keyword": "multi omics",
+      "count": 2
+    }
+  ],
+  "RegSys: Regulatory and Systems Genomics": [
+    {
+      "keyword": "sequence function",
+      "count": 4
+    },
+    {
+      "keyword": "gene regulation",
+      "count": 5
+    },
+    {
+      "keyword": "gene expression",
+      "count": 13
+    },
+    {
+      "keyword": "variant effect",
+      "count": 3
+    },
+    {
+      "keyword": "cell type specific",
+      "count": 3
+    },
+    {
+      "keyword": "cell type",
+      "count": 9
+    },
+    {
+      "keyword": "function deep learning",
+      "count": 2
+    },
+    {
+      "keyword": "deep learning",
+      "count": 6
+    },
+    {
+      "keyword": "single cell",
+      "count": 8
+    },
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 4
+    },
+    {
+      "keyword": "rna seq",
+      "count": 2
+    },
+    {
+      "keyword": "multi omics",
+      "count": 2
+    }
+  ],
+  "SCS: Student Council Symposium": [
+    {
+      "keyword": "sleep deprivation",
+      "count": 2
+    },
+    {
+      "keyword": "spatial transcriptomics",
+      "count": 2
+    },
+    {
+      "keyword": "cell type",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 2
+    }
+  ],
+  "SysMod: Computational Modeling of Biological Systems": [
+    {
+      "keyword": "single cell",
+      "count": 4
+    },
+    {
+      "keyword": "machine learning",
+      "count": 2
+    },
+    {
+      "keyword": "gene expression",
+      "count": 2
+    }
+  ],
+  "Tech Track": [
+    {
+      "keyword": "multi omics",
+      "count": 4
+    },
+    {
+      "keyword": "gene expression",
+      "count": 3
+    },
+    {
+      "keyword": "cell type",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
+      "count": 2
+    }
+  ],
+  "Text Mining: Text Mining for Healthcare and Biology": [
+    {
+      "keyword": "biomedical discovery",
+      "count": 2
+    },
+    {
+      "keyword": "multi hop",
+      "count": 2
+    },
+    {
+      "keyword": "knowledge graph",
+      "count": 3
+    }
+  ],
+  "TransMed: Translational Medicine Informatics & Applications": [
+    {
+      "keyword": "graph neural network",
+      "count": 2
+    },
+    {
+      "keyword": "multi omics",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 3
+    }
+  ],
+  "Tutorials": [
+    {
+      "keyword": "participants will",
+      "count": 6
+    },
+    {
+      "keyword": "agentic ai",
+      "count": 4
+    },
+    {
+      "keyword": "associated selection assays",
+      "count": 4
+    },
+    {
+      "keyword": "biophysical machine",
+      "count": 4
+    },
+    {
+      "keyword": "biophysical machine learning",
+      "count": 4
+    },
+    {
+      "keyword": "hands exercise",
+      "count": 4
+    },
+    {
+      "keyword": "hands on exercise",
+      "count": 4
+    },
+    {
+      "keyword": "metagenomic samples",
+      "count": 4
+    },
+    {
+      "keyword": "metagenomic sequence",
+      "count": 4
+    },
+    {
+      "keyword": "molecular sequence",
+      "count": 4
+    },
+    {
+      "keyword": "molecular sequence recognition",
+      "count": 4
+    },
+    {
+      "keyword": "quantum classical hybrid",
+      "count": 4
+    },
+    {
+      "keyword": "quantum machine learning",
+      "count": 4
+    },
+    {
+      "keyword": "somewhat goals",
+      "count": 4
+    },
+    {
+      "keyword": "they will",
+      "count": 4
+    },
+    {
+      "keyword": "they will learn",
+      "count": 4
+    },
+    {
+      "keyword": "will learn",
+      "count": 4
+    },
+    {
+      "keyword": "quantum computing",
+      "count": 4
+    },
+    {
+      "keyword": "artificial intelligence",
+      "count": 6
+    },
+    {
+      "keyword": "metagenomics",
+      "count": 4
+    },
+    {
+      "keyword": "precision medicine",
       "count": 4
     },
     {
@@ -318,27 +1145,73 @@
       "count": 2
     },
     {
+      "keyword": "machine learning",
+      "count": 8
+    },
+    {
+      "keyword": "phylogenetics",
+      "count": 2
+    },
+    {
+      "keyword": "agentic systems",
+      "count": 2
+    },
+    {
+      "keyword": "assistant agents",
+      "count": 2
+    },
+    {
+      "keyword": "automation rest interfaces",
+      "count": 2
+    },
+    {
+      "keyword": "bayesian phylogenetic",
+      "count": 2
+    },
+    {
+      "keyword": "bioinformatics biomedical informatics",
+      "count": 2
+    },
+    {
       "keyword": "biomedical informatics",
-      "count": 2
-    },
-    {
-      "keyword": "dna sequence generation",
-      "count": 2
-    },
-    {
-      "keyword": "gene regulatory network",
-      "count": 2
-    },
-    {
-      "keyword": "lab assistant",
-      "count": 2
-    },
-    {
-      "keyword": "phylogenetic networks",
       "count": 2
     }
   ],
-  "VarI: Variant Interpretation": [],
-  "WEB: Workshop on Education for Bioinformatics": [],
+  "VarI: Variant Interpretation": [
+    {
+      "keyword": "variant effect",
+      "count": 3
+    },
+    {
+      "keyword": "computational variant",
+      "count": 2
+    },
+    {
+      "keyword": "polygenic risk scores",
+      "count": 2
+    },
+    {
+      "keyword": "machine learning",
+      "count": 3
+    },
+    {
+      "keyword": "gene expression",
+      "count": 3
+    },
+    {
+      "keyword": "deep learning",
+      "count": 2
+    },
+    {
+      "keyword": "single cell",
+      "count": 2
+    }
+  ],
+  "WEB: Workshop on Education for Bioinformatics": [
+    {
+      "keyword": "bioinformatics training",
+      "count": 2
+    }
+  ],
   "Youth Bioinformatics Symposium": []
 }

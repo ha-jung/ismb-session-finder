@@ -215,7 +215,7 @@ def is_good_phrase(phrase: str, track_terms: set[str]) -> bool:
     return True
 
 
-def representative_keyword(session: dict, track_name: str = "") -> str | None:
+def session_keywords(session: dict, track_name: str = "") -> set[str]:
     candidates = candidate_phrases(session)
     track_terms = set(tokens(track_name)) if track_name else set()
     ranked = []
@@ -232,11 +232,20 @@ def representative_keyword(session: dict, track_name: str = "") -> str | None:
         score = weight * phrase_bonus * domain_bonus * keyword_bonus * title_bonus
         ranked.append((score, weight, phrase))
 
-    if not ranked:
-        return None
-
     ranked.sort(key=lambda item: (-item[0], -item[1], item[2]))
-    return ranked[0][2]
+    selected = []
+    seen_roots: Counter[str] = Counter()
+
+    for _, _, phrase in ranked:
+        root = phrase.split()[-1]
+        if seen_roots[root] >= 2:
+            continue
+        seen_roots[root] += 1
+        selected.append(phrase)
+        if len(selected) >= 8:
+            break
+
+    return set(selected)
 
 
 def build_group_keywords(groups: dict[str, list[dict]]) -> dict[str, list[dict]]:
@@ -246,9 +255,8 @@ def build_group_keywords(groups: dict[str, list[dict]]) -> dict[str, list[dict]]
     for name, group_sessions in groups.items():
         counter: Counter[str] = Counter()
         for session in group_sessions:
-            keyword = representative_keyword(session, "" if name == "__all__" else name)
-            if keyword:
-                counter[keyword] += 1
+            keywords = session_keywords(session, "" if name == "__all__" else name)
+            counter.update(keywords)
         per_group[name] = counter
         if name != "__all__":
             all_counts.update(counter)
