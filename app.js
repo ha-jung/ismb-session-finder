@@ -466,7 +466,8 @@ async function boot() {
     populateControls();
     const abstractCount = conferenceSessions().filter((session) => session.abstract).length;
     statusEl.textContent = `${conferenceSessions().length} conference sessions loaded · ${abstractCount} abstracts`;
-    runSearch("protein language model");
+    answerEl.textContent = "Enter a keyword query or choose a date and time to find sessions.";
+    resultsEl.innerHTML = "";
   } catch (error) {
     statusEl.textContent = "Could not load the schedule data. Please run this page through a local server.";
     answerEl.textContent = error.message;
