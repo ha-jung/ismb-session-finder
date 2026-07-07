@@ -54,6 +54,7 @@ STOPWORDS = {
     "our",
     "over",
     "paper",
+    "poster",
     "present",
     "presented",
     "provide",
@@ -62,6 +63,7 @@ STOPWORDS = {
     "results",
     "show",
     "shows",
+    "session",
     "such",
     "than",
     "that",
@@ -78,8 +80,14 @@ STOPWORDS = {
     "while",
     "with",
     "within",
+    "closing",
     "https",
     "http",
+    "keynote",
+    "remarks",
+    "tutorial",
+    "welcome",
+    "workshop",
     "www",
 }
 
@@ -188,6 +196,49 @@ def candidate_phrases(session: dict) -> Counter:
     return counts
 
 
+def is_good_phrase(phrase: str, track_terms: set[str]) -> bool:
+    parts = phrase.split()
+    if not parts:
+        return False
+    if any(part in STOPWORDS for part in parts):
+        return False
+    if any(part in {"com", "github", "gov", "ncbi", "nlm", "www", "https", "http"} for part in parts):
+        return False
+    if any(re.search(r"\d", part) for part in parts):
+        return False
+    if any(first == second for first, second in zip(parts, parts[1:])):
+        return False
+    if track_terms and set(parts).issubset(track_terms):
+        return False
+    if len(parts) == 1 and phrase not in DOMAIN_PHRASES:
+        return False
+    return True
+
+
+def representative_keyword(session: dict, track_name: str = "") -> str | None:
+    candidates = candidate_phrases(session)
+    track_terms = set(tokens(track_name)) if track_name else set()
+    ranked = []
+
+    for phrase, weight in candidates.items():
+        if not is_good_phrase(phrase, track_terms):
+            continue
+
+        parts = phrase.split()
+        phrase_bonus = 1.3 if len(parts) > 1 else 1.0
+        domain_bonus = 1.6 if phrase in DOMAIN_PHRASES else 1.0
+        keyword_bonus = 1.35 if phrase in split_keywords(str(session.get("keywords") or "")) else 1.0
+        title_bonus = 1.25 if phrase in normalize(str(session.get("title") or "")) else 1.0
+        score = weight * phrase_bonus * domain_bonus * keyword_bonus * title_bonus
+        ranked.append((score, weight, phrase))
+
+    if not ranked:
+        return None
+
+    ranked.sort(key=lambda item: (-item[0], -item[1], item[2]))
+    return ranked[0][2]
+
+
 def build_group_keywords(groups: dict[str, list[dict]]) -> dict[str, list[dict]]:
     all_counts: Counter[str] = Counter()
     per_group: dict[str, Counter[str]] = {}
@@ -195,7 +246,9 @@ def build_group_keywords(groups: dict[str, list[dict]]) -> dict[str, list[dict]]
     for name, group_sessions in groups.items():
         counter: Counter[str] = Counter()
         for session in group_sessions:
-            counter.update(candidate_phrases(session))
+            keyword = representative_keyword(session, "" if name == "__all__" else name)
+            if keyword:
+                counter[keyword] += 1
         per_group[name] = counter
         if name != "__all__":
             all_counts.update(counter)
@@ -210,19 +263,11 @@ def build_group_keywords(groups: dict[str, list[dict]]) -> dict[str, list[dict]]
         for phrase, count in counter.items():
             if count < 2:
                 continue
-            parts = phrase.split()
-            if any(part in STOPWORDS for part in parts):
-                continue
-            if any(part in {"com", "github", "gov", "ncbi", "nlm", "www", "https", "http"} for part in parts):
-                continue
-            if any(re.search(r"\d", part) for part in parts):
-                continue
-            if track_terms and set(parts).issubset(track_terms):
-                continue
-            if len(parts) == 1 and count < 4:
+            if not is_good_phrase(phrase, track_terms):
                 continue
             global_count = all_counts.get(phrase, count)
             specificity = (count / group_size) / max(global_count / total_sessions, 0.01)
+            parts = phrase.split()
             phrase_bonus = 1.25 if len(parts) > 1 else 1.0
             domain_bonus = 1.35 if phrase in DOMAIN_PHRASES else 1.0
             score = math.log1p(count) * specificity * phrase_bonus * domain_bonus
