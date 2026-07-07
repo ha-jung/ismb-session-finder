@@ -1,4 +1,5 @@
 const DATA_PATH = "./sessions.json";
+const KEYWORDS_PATH = "./track_keywords.json";
 const MAX_RESULTS = 40;
 const STORAGE_KEY = "ismb2026_saved_sessions";
 const EXCLUDED_DATES = new Set(["2026-07-06", "2026-07-07"]);
@@ -17,8 +18,10 @@ const statusEl = document.querySelector("#status");
 const answerEl = document.querySelector("#answer");
 const resultsEl = document.querySelector("#results");
 const quickButtons = document.querySelectorAll("[data-query]");
+const hotKeywordsList = document.querySelector("#hot-keywords-list");
 
 let sessions = [];
+let trackKeywords = {};
 let savedIds = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
 let activeQuery = "";
 
@@ -149,6 +152,30 @@ function populateControls() {
     dateSelect.value = firstTalk.date;
     timeSelect.value = firstTalk.start_time.slice(0, 5);
   }
+}
+
+function populateHotKeywords() {
+  if (!hotKeywordsList) return;
+
+  const key = trackFilter.value || "__all__";
+  const keywords = trackKeywords[key] || trackKeywords.__all__ || [];
+
+  if (!keywords.length) {
+    hotKeywordsList.innerHTML = `<span class="hot-keyword-empty">No keyword suggestions yet.</span>`;
+    return;
+  }
+
+  hotKeywordsList.innerHTML = keywords
+    .slice(0, 10)
+    .map(
+      ({ keyword, count }) => `
+        <button type="button" data-hot-keyword="${escapeHtml(keyword)}">
+          <span>${escapeHtml(keyword)}</span>
+          <small>${count}</small>
+        </button>
+      `,
+    )
+    .join("");
 }
 
 function sessionText(session) {
@@ -460,10 +487,17 @@ function renderSchedule() {
 
 async function boot() {
   try {
-    const response = await fetch(DATA_PATH);
+    const [response, keywordsResponse] = await Promise.all([
+      fetch(DATA_PATH),
+      fetch(KEYWORDS_PATH),
+    ]);
     if (!response.ok) throw new Error(`Data load failed: ${response.status}`);
     sessions = await response.json();
+    if (keywordsResponse.ok) {
+      trackKeywords = await keywordsResponse.json();
+    }
     populateControls();
+    populateHotKeywords();
     const abstractCount = conferenceSessions().filter((session) => session.abstract).length;
     statusEl.textContent = `${conferenceSessions().length} conference sessions loaded · ${abstractCount} abstracts`;
     answerEl.textContent = "Enter a keyword query or choose a date and time to find sessions.";
@@ -486,12 +520,21 @@ quickButtons.forEach((button) => {
   });
 });
 
+hotKeywordsList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-hot-keyword]");
+  if (!button) return;
+
+  queryInput.value = button.dataset.hotKeyword;
+  runSearch(button.dataset.hotKeyword);
+});
+
 timeForm.addEventListener("submit", (event) => {
   event.preventDefault();
   runTimeSearch();
 });
 
 trackFilter.addEventListener("change", () => {
+  populateHotKeywords();
   if (activeQuery) runSearch(activeQuery);
 });
 
