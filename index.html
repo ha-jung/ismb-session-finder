@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ISMB 2026 Session Finder</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="search-panel" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">ISMB 2026</p>
+          <h1 id="page-title">Session Finder</h1>
+          <p class="subtitle">
+            Ask with keywords like protein language model, single cell, docking,
+            genome, or CYP.
+          </p>
+        </div>
+
+        <form id="search-form" class="search-form">
+          <label for="query">Keyword query</label>
+          <div class="search-row">
+            <input
+              id="query"
+              name="query"
+              type="search"
+              autocomplete="off"
+              placeholder="e.g. protein binding sites, CRISPR, drug discovery"
+            />
+            <button type="submit">Search</button>
+          </div>
+        </form>
+
+        <div class="quick-filters" aria-label="Example queries">
+          <button type="button" data-query="protein language model">Protein LM</button>
+          <button type="button" data-query="single cell">Single cell</button>
+          <button type="button" data-query="drug discovery">Drug discovery</button>
+          <button type="button" data-query="structural bioinformatics">Structure</button>
+        </div>
+
+        <section class="filters" aria-label="Search filters">
+          <label for="track-filter">Track</label>
+          <select id="track-filter"></select>
+
+          <label for="room-filter">Room</label>
+          <select id="room-filter"></select>
+
+          <label for="sort-select">Sort results</label>
+          <select id="sort-select">
+            <option value="relevance">Relevance</option>
+            <option value="time">Time</option>
+            <option value="track">Track</option>
+          </select>
+        </section>
+
+        <form id="time-form" class="time-form">
+          <label for="date-select">Find sessions by time</label>
+          <div class="time-grid">
+            <select id="date-select" name="date"></select>
+            <select id="time-select" name="time"></select>
+          </div>
+          <button type="submit">Show Sessions</button>
+        </form>
+
+        <div class="action-grid">
+          <button id="now-button" type="button">What Should I Attend Now?</button>
+          <button id="schedule-button" type="button">My Schedule</button>
+        </div>
+      </section>
+
+      <section class="answer-panel" aria-live="polite">
+        <div id="status" class="status">Loading schedule...</div>
+        <div id="answer" class="answer"></div>
+        <div id="results" class="results"></div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
