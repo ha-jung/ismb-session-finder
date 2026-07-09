@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ISMB 2026 Schedule</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#161d2e; --panel2:#1c2740; --line:#26324d;
+    --txt:#e8edf7; --muted:#93a1bd; --accent:#5b8cff; --accentsoft:#1e2b4d;
+    --break:#232c40;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f4f6fb; --panel:#ffffff; --panel2:#f0f3fa; --line:#dce3f0;
+      --txt:#131a2b; --muted:#5a6784; --accent:#2f63e6; --accentsoft:#e6edff; --break:#eef1f7; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  header{padding:22px 20px 8px;max-width:1400px;margin:0 auto;}
+  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--accent);font-weight:700;margin:0}
+  h1{margin:4px 0 2px;font-size:26px;letter-spacing:-.02em}
+  .sub{margin:0;color:var(--muted);font-size:13px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;max-width:1400px;margin:16px auto 0;padding:0 20px;}
+  .tab{border:1px solid var(--line);background:var(--panel);color:var(--txt);
+    padding:9px 16px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:600;transition:.15s}
+  .tab small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+  .tab:hover{border-color:var(--accent)}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tab.active small{color:#dbe6ff}
+  main{max-width:1400px;margin:0 auto;padding:16px 20px 60px}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  table{border-collapse:collapse;width:100%;min-width:960px}
+  th,td{border:1px solid var(--line);vertical-align:top;padding:0}
+  thead th{position:sticky;top:0;background:var(--panel2);z-index:2;
+    font-size:11px;font-weight:600;color:var(--muted);padding:9px 8px;text-align:center;line-height:1.25}
+  thead th .code{display:block;color:var(--txt);font-weight:700;font-size:11px;margin-top:2px}
+  .timecol{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700;font-size:12.5px;
+    padding:10px 10px;background:var(--panel2);position:sticky;left:0;z-index:1;text-align:right;color:var(--txt)}
+  .timecol span{display:block;color:var(--muted);font-weight:500;font-size:11px}
+  thead th.timehdr{left:0;z-index:3}
+  td.cell{padding:8px 9px;font-size:12.5px;line-height:1.3}
+  td.empty{background:transparent}
+  .chip{display:block;border-radius:8px;padding:7px 9px;font-weight:600;
+    border-left:3px solid var(--accent);background:var(--accentsoft);color:var(--txt);min-height:100%}
+  .full td{padding:9px 12px;background:var(--break);color:var(--muted);
+    font-style:italic;text-align:center;font-size:12.5px;font-weight:500}
+  .full.keynote td{background:linear-gradient(90deg,var(--accentsoft),transparent);
+    color:var(--txt);font-style:normal;font-weight:700;border-left:3px solid var(--accent)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:14px 2px 0;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+  footer{max-width:1400px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:12px}
+  @media(max-width:640px){ h1{font-size:22px} .tab{padding:8px 12px} }
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">ISCB &middot; Conference Timetable</p>
+  <h1>ISMB 2026 Schedule</h1>
+  <p class="sub">July 12&ndash;16, 2026 &middot; Washington Hilton. Tap a day to view its full room-by-room grid.</p>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<main>
+  <div class="scroll"><table id="grid"><thead></thead><tbody></tbody></table></div>
+  <div class="legend" id="legend"></div>
+</main>
+<footer>Built from the official ISMB 2026 schedule PDF. Times shown in local conference time.</footer>
+
+<script>
+const DATA = {"rooms":["International Ballroom Center (IBC)","International Ballroom West (IBW)","International Ballroom East (IBE)","Room 9-10 Combo","Cabinet","Georgetown","Jefferson West","Jefferson East","Lincoln West","Lincoln East","Monroe"],"days":[{"title":"Sunday, July 12, 2026","slots":[{"start":"9:00","end":"10:45","cells":["","","DREAM","SCS: Student Council Symposium","","Tutorial IP1: Agentic AI System for In Silico Team Science: From LLM Basics to Lab Assistant Agents","Tutorial IP3: From Trees to Networks","Tutorial IP5: Computational Network Analysis of Omics Data","Tutorial IP7: Quantum Computing for Multi-omics analyses","Tutorial IP8: Metagenomic sequence analysis using k- mer based methods","Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"],"full":false},{"start":"10:45","end":"11:00","cells":["Coffee Break","","","","","","","","","",""],"full":true},{"start":"11:00","end":"13:00","cells":["","","DREAM","SCS: Student Council Symposium","","Tutorial IP1: Agentic AI System for In Silico Team Science: From LLM Basics to Lab Assistant Agents","Tutorial IP3: From Trees to Networks","Tutorial IP5: Computational Network Analysis of Omics Data","Tutorial IP7: Quantum Computing for Multi-omics analyses","Tutorial IP8: Metagenomic sequence analysis using k- mer based methods","Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"],"full":false},{"start":"13:00","end":"14:00","cells":["Lunch Break - On Your Own","","","","","","","","","",""],"full":true},{"start":"14:00","end":"16:00","cells":["","","DREAM","SCS: Student Council Symposium","Youth Bioinformatics Symposium until 17:15","Tutorial IP6: Network Biology Workflows with Cytoscape and NDEx: Visualization, Analysis, Sharing, Automation, and Apps","Tutorial IP2: Large Language Models and Agentic AI for Biomedical Informatics","Tutorial IP4: Generating realistic synthetic biological data using phylogenetics","Tutorial IP7: Quantum Computing for Multi-omics analyses","Tutorial IP8: Metagenomic sequence analysis using k- mer based methods","Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"],"full":false},{"start":"16:00","end":"16:15","cells":["Coffee Break","","","","","","","","","",""],"full":true},{"start":"16:00","end":"18:00","cells":["Career Fair in Columbia","","","","","","","","","",""],"full":true},{"start":"16:15","end":"18:00","cells":["","","DREAM","","","Tutorial IP6: Network Biology Workflows with Cytoscape and NDEx: Visualization, Analysis, Sharing, Automation, and Apps","Tutorial IP2: Large Language Models and Agentic AI for Biomedical Informatics","Tutorial IP4: Generating realistic synthetic biological data using phylogenetics","Tutorial IP7: Quantum Computing for Multi-omics analyses","Tutorial IP8: Metagenomic sequence analysis using k- mer based methods","Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"],"full":false},{"start":"18:00","end":"18:30","cells":["Pre-Conference Break","","","","","","","","","",""],"full":true},{"start":"18:30","end":"19:30","cells":["Conference Welcome and Distinguished Keynote - Richard Durbin","","","","","","","","","",""],"full":true},{"start":"19:30","end":"21:00","cells":["Welcome Networking Reception in Columbia","","","","","","","","","",""],"full":true}]},{"title":"Monday, July 13, 2026","slots":[{"start":"8:40","end":"10:00","cells":["Morning Welcome and Distinguished Keynote - Olga Troyanskaya","","","","","","","","","",""],"full":true},{"start":"10:00","end":"11:00","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"11:00","end":"13:00","cells":["HitSeq","iRNA","RegSys","CompMS","NIH/ODSS","Microbiome","TextMining","CSi","BOKR","Function","Tech Talks"],"full":false},{"start":"13:00","end":"14:20","cells":["Lunch Break - On Your Own","","","","","","","","","",""],"full":true},{"start":"14:20","end":"16:00","cells":["HitSeq","iRNA","RegSys","CompMS","NIH/ODSS","Microbiome","TextMining","CSi","BOKR","Function","Tech Talks"],"full":false},{"start":"16:00","end":"16:40","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"16:40","end":"18:00","cells":["HitSeq","iRNA","RegSys","","NIH/ODSS","Microbiome","TextMining","CSi","BOKR","Function","Tech Talks"],"full":false},{"start":"18:30","end":"20:00","cells":["President's Reception - INVITE ONLY","","","","","","","","","",""],"full":true}]},{"title":"Tuesday, July 14, 2026","slots":[{"start":"8:40","end":"10:00","cells":["Morning Welcome and Fellows Introduction followed by Distinguished Keynote - Carlos Bustamante","","","","","","","","","",""],"full":true},{"start":"10:00","end":"11:00","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"11:00","end":"13:00","cells":["HitSeq","iRNA","RegSys","Publication Session","BioInfoCore","Microbiome","SysMod","BioVis","BOKR/BOSC","Function","Tech Talks"],"full":false},{"start":"13:00","end":"14:20","cells":["Lunch Break - On Your Own","","","","","","","","","",""],"full":true},{"start":"14:20","end":"16:00","cells":["HitSeq","iRNA","RegSys","Industry Workshop","BioInfoCore","NetBio","SysMod","BioVis","BOSC","BOKR/Function","Quantum4Life Sciences"],"full":false},{"start":"16:00","end":"16:40","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"16:40","end":"18:00","cells":["HitSeq","iRNA","RegSys","Career Symposium","BioInfoCore","NetBio","SysMod","BioVis","BOSC","Function","BOKR"],"full":false},{"start":"18:00","end":"19:30","cells":["Success Circles - Reinvented Networking where participants are grouped into small circles, each led by a knowledgeable facilitator in International Terrace","","","","","","","","","",""],"full":true}]},{"title":"Wednesday, July 15, 2026","slots":[{"start":"8:50","end":"10:00","cells":["Morning Welcome and Distinguished Keynote - Partha Majumder","","","","","","","","","",""],"full":true},{"start":"10:00","end":"11:00","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"11:00","end":"13:00","cells":["MLCSB","TransMed","3D","NetBio","WEB","GenCompBio","EvolCompGen","VarI","BOSC","CAMDA","ICBO"],"full":false},{"start":"13:00","end":"14:20","cells":["Lunch Break - On Your Own","","","","","","","","","",""],"full":true},{"start":"14:20","end":"16:00","cells":["MLCSB","TransMed","3D","NetBio","WEB","GenCompBio","EvolCompGen","VarI","BOSC","CAMDA","ICBO"],"full":false},{"start":"16:00","end":"16:40","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"16:40","end":"18:00","cells":["MLCSB","TransMed","3D","NetBio","WEB","GenCompBio","EvolCompGen","VarI","BOSC","CAMDA","ICBO"],"full":false}]},{"title":"Thursday, July 16, 2026","slots":[{"start":"8:40","end":"10:00","cells":["MLCSB","","3D","Bioinformatics in the USA","Education","GenCompBio","EvolCompGen","Equity and Diversity in CompBio Research","","CAMDA","ICBO"],"full":false},{"start":"10:00","end":"11:00","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"11:00","end":"13:00","cells":["MLCSB","","3D","Bioinformatics in the USA","Education","GenCompBio","EvolCompGen","Pathogen Data Network Event","Nvidia Workshop","CAMDA","ICBO"],"full":false},{"start":"13:00","end":"14:20","cells":["Lunch Break - On Your Own","","","","","","","","","",""],"full":true},{"start":"14:20","end":"16:00","cells":["MLCSB","","3D","Bioinformatics in the USA","Education","GenCompBio","EvolCompGen","","ICBO - VDOS workshop","CAMDA",""],"full":false},{"start":"16:00","end":"16:40","cells":["Caffeinate and Connect with Posters and Exhibitors in Columbia","","","","","","","","","",""],"full":true},{"start":"16:40","end":"18:00","cells":["Distinguished Keynote - Marinka Zitnik and Closing Ceremonies","","","","","","","","","",""],"full":true}]}]};
+const roomCode = r => { const m = r.match(/\(([^)]+)\)/); return m?m[1]:''; };
+const roomName = r => r.replace(/\s*\([^)]*\)/,'').trim();
+
+// consistent color per session label
+const PALETTE=["#5b8cff","#00b8a3","#e0669a","#f0883e","#9d7bff","#39a0ed",
+  "#d1a54a","#6fbf73","#e05c5c","#4bb1c9","#b06fd6","#8aa1c4"];
+const colorCache={};
+function colorFor(label){
+  if(colorCache[label]) return colorCache[label];
+  let h=0; for(const c of label) h=(h*31+c.charCodeAt(0))>>>0;
+  const c=PALETTE[h%PALETTE.length]; colorCache[label]=c; return c;
+}
+function tint(hex,a){const n=parseInt(hex.slice(1),16);
+  return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;}
+
+const KEY=/keynote|closing|welcome and/i;
+
+let active=0;
+const tabs=document.getElementById('tabs');
+DATA.days.forEach((d,i)=>{
+  const parts=d.title.split(',');
+  const b=document.createElement('button');
+  b.className='tab'+(i===0?' active':'');
+  b.innerHTML=`${parts[0]}<small>${parts.slice(1).join(',').trim()}</small>`;
+  b.onclick=()=>{active=i;[...tabs.children].forEach(t=>t.classList.remove('active'));
+    b.classList.add('active');render();};
+  tabs.appendChild(b);
+});
+
+function render(){
+  const day=DATA.days[active];
+  const thead=document.querySelector('#grid thead');
+  const tbody=document.querySelector('#grid tbody');
+  // header
+  let h='<tr><th class="timehdr timecol">Time</th>';
+  DATA.rooms.forEach(r=>{h+=`<th>${roomName(r)}<span class="code">${roomCode(r)||''}</span></th>`;});
+  h+='</tr>'; thead.innerHTML=h;
+  // body
+  let rows='';
+  const seen=new Set();
+  day.slots.forEach(s=>{
+    const timeCell=`<td class="timecol">${s.start}<span>${s.end}</span></td>`;
+    if(s.full){
+      const label=s.cells[0];
+      const cls='full'+(KEY.test(label)?' keynote':'');
+      rows+=`<tr class="${cls}">${timeCell}<td colspan="${DATA.rooms.length}">${label}</td></tr>`;
+    }else{
+      let tds='';
+      s.cells.forEach(c=>{
+        if(!c){tds+='<td class="cell empty"></td>';return;}
+        seen.add(c);
+        const col=colorFor(c);
+        tds+=`<td class="cell"><span class="chip" style="border-left-color:${col};background:${tint(col,0.16)}">${c}</span></td>`;
+      });
+      rows+=`<tr>${timeCell}${tds}</tr>`;
+    }
+  });
+  tbody.innerHTML=rows;
+  // legend
+  const leg=document.getElementById('legend');
+  const labels=[...seen].sort((a,b)=>a.localeCompare(b));
+  leg.innerHTML=labels.map(l=>`<span><i style="background:${colorFor(l)}"></i>${l}</span>`).join('');
+}
+render();
+</script>
+</body>
+</html>

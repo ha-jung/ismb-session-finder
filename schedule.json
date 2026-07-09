@@ -1,0 +1,780 @@
+{
+ "rooms": [
+  "International Ballroom Center (IBC)",
+  "International Ballroom West (IBW)",
+  "International Ballroom East (IBE)",
+  "Room 9-10 Combo",
+  "Cabinet",
+  "Georgetown",
+  "Jefferson West",
+  "Jefferson East",
+  "Lincoln West",
+  "Lincoln East",
+  "Monroe"
+ ],
+ "days": [
+  {
+   "title": "Sunday, July 12, 2026",
+   "slots": [
+    {
+     "start": "9:00",
+     "end": "10:45",
+     "cells": [
+      "",
+      "",
+      "DREAM",
+      "SCS: Student Council Symposium",
+      "",
+      "Tutorial IP1: Agentic AI System for In Silico Team Science: From LLM Basics to Lab Assistant Agents",
+      "Tutorial IP3: From Trees to Networks",
+      "Tutorial IP5: Computational Network Analysis of Omics Data",
+      "Tutorial IP7: Quantum Computing for Multi-omics analyses",
+      "Tutorial IP8: Metagenomic sequence analysis using k- mer based methods",
+      "Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"
+     ],
+     "full": false
+    },
+    {
+     "start": "10:45",
+     "end": "11:00",
+     "cells": [
+      "Coffee Break",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "11:00",
+     "end": "13:00",
+     "cells": [
+      "",
+      "",
+      "DREAM",
+      "SCS: Student Council Symposium",
+      "",
+      "Tutorial IP1: Agentic AI System for In Silico Team Science: From LLM Basics to Lab Assistant Agents",
+      "Tutorial IP3: From Trees to Networks",
+      "Tutorial IP5: Computational Network Analysis of Omics Data",
+      "Tutorial IP7: Quantum Computing for Multi-omics analyses",
+      "Tutorial IP8: Metagenomic sequence analysis using k- mer based methods",
+      "Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"
+     ],
+     "full": false
+    },
+    {
+     "start": "13:00",
+     "end": "14:00",
+     "cells": [
+      "Lunch Break - On Your Own",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "14:00",
+     "end": "16:00",
+     "cells": [
+      "",
+      "",
+      "DREAM",
+      "SCS: Student Council Symposium",
+      "Youth Bioinformatics Symposium until 17:15",
+      "Tutorial IP6: Network Biology Workflows with Cytoscape and NDEx: Visualization, Analysis, Sharing, Automation, and Apps",
+      "Tutorial IP2: Large Language Models and Agentic AI for Biomedical Informatics",
+      "Tutorial IP4: Generating realistic synthetic biological data using phylogenetics",
+      "Tutorial IP7: Quantum Computing for Multi-omics analyses",
+      "Tutorial IP8: Metagenomic sequence analysis using k- mer based methods",
+      "Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"
+     ],
+     "full": false
+    },
+    {
+     "start": "16:00",
+     "end": "16:15",
+     "cells": [
+      "Coffee Break",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "16:00",
+     "end": "18:00",
+     "cells": [
+      "Career Fair in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "16:15",
+     "end": "18:00",
+     "cells": [
+      "",
+      "",
+      "DREAM",
+      "",
+      "",
+      "Tutorial IP6: Network Biology Workflows with Cytoscape and NDEx: Visualization, Analysis, Sharing, Automation, and Apps",
+      "Tutorial IP2: Large Language Models and Agentic AI for Biomedical Informatics",
+      "Tutorial IP4: Generating realistic synthetic biological data using phylogenetics",
+      "Tutorial IP7: Quantum Computing for Multi-omics analyses",
+      "Tutorial IP8: Metagenomic sequence analysis using k- mer based methods",
+      "Tutorial IP9: Learning models of molecular sequence recognition from NGS data using biophysical machine learning"
+     ],
+     "full": false
+    },
+    {
+     "start": "18:00",
+     "end": "18:30",
+     "cells": [
+      "Pre-Conference Break",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "18:30",
+     "end": "19:30",
+     "cells": [
+      "Conference Welcome and Distinguished Keynote - Richard Durbin",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "19:30",
+     "end": "21:00",
+     "cells": [
+      "Welcome Networking Reception in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    }
+   ]
+  },
+  {
+   "title": "Monday, July 13, 2026",
+   "slots": [
+    {
+     "start": "8:40",
+     "end": "10:00",
+     "cells": [
+      "Morning Welcome and Distinguished Keynote - Olga Troyanskaya",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "11:00",
+     "end": "13:00",
+     "cells": [
+      "HitSeq",
+      "iRNA",
+      "RegSys",
+      "CompMS",
+      "NIH/ODSS",
+      "Microbiome",
+      "TextMining",
+      "CSi",
+      "BOKR",
+      "Function",
+      "Tech Talks"
+     ],
+     "full": false
+    },
+    {
+     "start": "13:00",
+     "end": "14:20",
+     "cells": [
+      "Lunch Break - On Your Own",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "14:20",
+     "end": "16:00",
+     "cells": [
+      "HitSeq",
+      "iRNA",
+      "RegSys",
+      "CompMS",
+      "NIH/ODSS",
+      "Microbiome",
+      "TextMining",
+      "CSi",
+      "BOKR",
+      "Function",
+      "Tech Talks"
+     ],
+     "full": false
+    },
+    {
+     "start": "16:00",
+     "end": "16:40",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "16:40",
+     "end": "18:00",
+     "cells": [
+      "HitSeq",
+      "iRNA",
+      "RegSys",
+      "",
+      "NIH/ODSS",
+      "Microbiome",
+      "TextMining",
+      "CSi",
+      "BOKR",
+      "Function",
+      "Tech Talks"
+     ],
+     "full": false
+    },
+    {
+     "start": "18:30",
+     "end": "20:00",
+     "cells": [
+      "President's Reception - INVITE ONLY",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    }
+   ]
+  },
+  {
+   "title": "Tuesday, July 14, 2026",
+   "slots": [
+    {
+     "start": "8:40",
+     "end": "10:00",
+     "cells": [
+      "Morning Welcome and Fellows Introduction followed by Distinguished Keynote - Carlos Bustamante",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "11:00",
+     "end": "13:00",
+     "cells": [
+      "HitSeq",
+      "iRNA",
+      "RegSys",
+      "Publication Session",
+      "BioInfoCore",
+      "Microbiome",
+      "SysMod",
+      "BioVis",
+      "BOKR/BOSC",
+      "Function",
+      "Tech Talks"
+     ],
+     "full": false
+    },
+    {
+     "start": "13:00",
+     "end": "14:20",
+     "cells": [
+      "Lunch Break - On Your Own",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "14:20",
+     "end": "16:00",
+     "cells": [
+      "HitSeq",
+      "iRNA",
+      "RegSys",
+      "Industry Workshop",
+      "BioInfoCore",
+      "NetBio",
+      "SysMod",
+      "BioVis",
+      "BOSC",
+      "BOKR/Function",
+      "Quantum4Life Sciences"
+     ],
+     "full": false
+    },
+    {
+     "start": "16:00",
+     "end": "16:40",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "16:40",
+     "end": "18:00",
+     "cells": [
+      "HitSeq",
+      "iRNA",
+      "RegSys",
+      "Career Symposium",
+      "BioInfoCore",
+      "NetBio",
+      "SysMod",
+      "BioVis",
+      "BOSC",
+      "Function",
+      "BOKR"
+     ],
+     "full": false
+    },
+    {
+     "start": "18:00",
+     "end": "19:30",
+     "cells": [
+      "Success Circles - Reinvented Networking where participants are grouped into small circles, each led by a knowledgeable facilitator in International Terrace",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    }
+   ]
+  },
+  {
+   "title": "Wednesday, July 15, 2026",
+   "slots": [
+    {
+     "start": "8:50",
+     "end": "10:00",
+     "cells": [
+      "Morning Welcome and Distinguished Keynote - Partha Majumder",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "11:00",
+     "end": "13:00",
+     "cells": [
+      "MLCSB",
+      "TransMed",
+      "3D",
+      "NetBio",
+      "WEB",
+      "GenCompBio",
+      "EvolCompGen",
+      "VarI",
+      "BOSC",
+      "CAMDA",
+      "ICBO"
+     ],
+     "full": false
+    },
+    {
+     "start": "13:00",
+     "end": "14:20",
+     "cells": [
+      "Lunch Break - On Your Own",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "14:20",
+     "end": "16:00",
+     "cells": [
+      "MLCSB",
+      "TransMed",
+      "3D",
+      "NetBio",
+      "WEB",
+      "GenCompBio",
+      "EvolCompGen",
+      "VarI",
+      "BOSC",
+      "CAMDA",
+      "ICBO"
+     ],
+     "full": false
+    },
+    {
+     "start": "16:00",
+     "end": "16:40",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "16:40",
+     "end": "18:00",
+     "cells": [
+      "MLCSB",
+      "TransMed",
+      "3D",
+      "NetBio",
+      "WEB",
+      "GenCompBio",
+      "EvolCompGen",
+      "VarI",
+      "BOSC",
+      "CAMDA",
+      "ICBO"
+     ],
+     "full": false
+    }
+   ]
+  },
+  {
+   "title": "Thursday, July 16, 2026",
+   "slots": [
+    {
+     "start": "8:40",
+     "end": "10:00",
+     "cells": [
+      "MLCSB",
+      "",
+      "3D",
+      "Bioinformatics in the USA",
+      "Education",
+      "GenCompBio",
+      "EvolCompGen",
+      "Equity and Diversity in CompBio Research",
+      "",
+      "CAMDA",
+      "ICBO"
+     ],
+     "full": false
+    },
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "11:00",
+     "end": "13:00",
+     "cells": [
+      "MLCSB",
+      "",
+      "3D",
+      "Bioinformatics in the USA",
+      "Education",
+      "GenCompBio",
+      "EvolCompGen",
+      "Pathogen Data Network Event",
+      "Nvidia Workshop",
+      "CAMDA",
+      "ICBO"
+     ],
+     "full": false
+    },
+    {
+     "start": "13:00",
+     "end": "14:20",
+     "cells": [
+      "Lunch Break - On Your Own",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "14:20",
+     "end": "16:00",
+     "cells": [
+      "MLCSB",
+      "",
+      "3D",
+      "Bioinformatics in the USA",
+      "Education",
+      "GenCompBio",
+      "EvolCompGen",
+      "",
+      "ICBO - VDOS workshop",
+      "CAMDA",
+      ""
+     ],
+     "full": false
+    },
+    {
+     "start": "16:00",
+     "end": "16:40",
+     "cells": [
+      "Caffeinate and Connect with Posters and Exhibitors in Columbia",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    },
+    {
+     "start": "16:40",
+     "end": "18:00",
+     "cells": [
+      "Distinguished Keynote - Marinka Zitnik and Closing Ceremonies",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "full": true
+    }
+   ]
+  }
+ ]
+}
