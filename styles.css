@@ -83,6 +83,27 @@ h1 {
   line-height: 1.55;
 }
 
+.schedule-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 9px 15px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--accent-dark);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.schedule-link:hover {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+
 .search-form {
   margin-top: 28px;
 }
