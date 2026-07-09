@@ -17,7 +17,6 @@ const scheduleButton = document.querySelector("#schedule-button");
 const statusEl = document.querySelector("#status");
 const answerEl = document.querySelector("#answer");
 const resultsEl = document.querySelector("#results");
-const quickButtons = document.querySelectorAll("[data-query]");
 const hotKeywordsList = document.querySelector("#hot-keywords-list");
 
 let sessions = [];
@@ -555,13 +554,6 @@ async function boot() {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   runSearch(queryInput.value, { exact: false });
-});
-
-quickButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    queryInput.value = button.dataset.query;
-    runSearch(button.dataset.query, { exact: false });
-  });
 });
 
 hotKeywordsList.addEventListener("click", (event) => {

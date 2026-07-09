@@ -163,7 +163,6 @@ h1 {
 }
 
 .search-row button,
-.quick-filters button,
 .time-form button,
 .action-grid button,
 .save-button {
@@ -186,20 +185,6 @@ h1 {
 .time-form button:hover,
 .action-grid button:hover {
   background: var(--accent-dark);
-}
-
-.quick-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.quick-filters button {
-  padding: 8px 10px;
-  color: var(--accent-dark);
-  background: #e2f3f0;
-  font-weight: 700;
 }
 
 .hot-keywords {
