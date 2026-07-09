@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ISMB 2026 Session Finder</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=2" />
   </head>
   <body>
     <main class="app-shell">
@@ -16,7 +16,11 @@
             Search titles, abstracts, authors, and keywords by topic, time,
             track, or room.
           </p>
-          <a class="schedule-link" href="./schedule.html">📅 View full conference schedule</a>
+          <a class="schedule-link" href="./schedule.html">
+            <span class="cal" aria-hidden="true">📅</span>
+            <span>View full conference schedule</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
         </div>
 
         <form id="search-form" class="search-form">

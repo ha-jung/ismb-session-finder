@@ -83,25 +83,47 @@ h1 {
   line-height: 1.55;
 }
 
-.schedule-link {
+.search-panel .schedule-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  padding: 9px 15px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--panel);
-  color: var(--accent-dark);
-  font-weight: 700;
-  font-size: 0.9rem;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.92rem;
+  line-height: 1;
   text-decoration: none;
-  transition: border-color 0.15s, background 0.15s;
+  box-shadow: 0 6px 16px rgba(15, 118, 110, 0.22);
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.schedule-link:hover {
-  border-color: var(--accent);
-  background: var(--soft);
+.search-panel .schedule-link .cal {
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.search-panel .schedule-link .arrow {
+  margin-left: 2px;
+  transition: transform 0.15s ease;
+}
+
+.search-panel .schedule-link:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 118, 110, 0.28);
+}
+
+.search-panel .schedule-link:hover .arrow {
+  transform: translateX(3px);
+}
+
+.search-panel .schedule-link:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, 0.35);
+  outline-offset: 2px;
 }
 
 .search-form {
