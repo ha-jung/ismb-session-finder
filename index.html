@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ISMB 2026 Session Finder</title>
-    <link rel="stylesheet" href="./styles.css?v=4" />
+    <link rel="stylesheet" href="./styles.css?v=6" />
   </head>
   <body>
     <main class="app-shell">
@@ -36,11 +36,6 @@
             <button type="submit">Search</button>
           </div>
         </form>
-
-        <section class="hot-keywords" aria-label="Hot keywords">
-          <div class="hot-keywords-title">Hot Keywords</div>
-          <div id="hot-keywords-list" class="hot-keywords-list"></div>
-        </section>
 
         <section class="filters" aria-label="Search filters">
           <label for="type-filter">Type</label>
@@ -83,6 +78,7 @@
         <div id="status" class="status">Loading schedule...</div>
         <div id="answer" class="answer"></div>
         <div id="results" class="results"></div>
+        <div id="pager" class="pager"></div>
       </section>
     </main>
 

@@ -187,64 +187,6 @@ h1 {
   background: var(--accent-dark);
 }
 
-.hot-keywords {
-  margin-top: 18px;
-}
-
-.hot-keywords-title {
-  margin-bottom: 8px;
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.hot-keywords-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hot-keywords-list button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  max-width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #b7ded8;
-  border-radius: 6px;
-  color: var(--accent-dark);
-  background: #f1fbf9;
-  cursor: pointer;
-  font-weight: 750;
-}
-
-.hot-keywords-list button:hover {
-  border-color: var(--accent);
-  background: #dff2ee;
-}
-
-.hot-keywords-list span {
-  overflow-wrap: anywhere;
-}
-
-.hot-keywords-list small {
-  flex: 0 0 auto;
-  min-width: 22px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  color: white;
-  background: var(--accent);
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-align: center;
-}
-
-.hot-keyword-empty {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
 .filters {
   display: grid;
   gap: 8px;
@@ -394,6 +336,44 @@ mark {
   border-color: transparent;
   font-weight: 800;
   letter-spacing: 0.01em;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.pager:empty {
+  display: none;
+}
+
+.pager-btn {
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--accent-dark);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pager-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+
+.pager-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pager-info {
+  color: var(--muted);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .track {

@@ -1,6 +1,5 @@
 const DATA_PATH = "./sessions.json";
 const POSTERS_PATH = "./posters.json";
-const KEYWORDS_PATH = "./track_keywords.json";
 const MAX_RESULTS = 40;
 const STORAGE_KEY = "ismb2026_saved_sessions";
 const EXCLUDED_DATES = new Set(["2026-07-06", "2026-07-07"]);
@@ -13,19 +12,20 @@ const timeSelect = document.querySelector("#time-select");
 const trackFilter = document.querySelector("#track-filter");
 const roomFilter = document.querySelector("#room-filter");
 const typeFilter = document.querySelector("#type-filter");
+const pagerEl = document.querySelector("#pager");
 const sortSelect = document.querySelector("#sort-select");
 const nowButton = document.querySelector("#now-button");
 const scheduleButton = document.querySelector("#schedule-button");
 const statusEl = document.querySelector("#status");
 const answerEl = document.querySelector("#answer");
 const resultsEl = document.querySelector("#results");
-const hotKeywordsList = document.querySelector("#hot-keywords-list");
 
 let sessions = [];
-let trackKeywords = {};
 let savedIds = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
 let activeQuery = "";
 let activeExactSearch = false;
+let filteredList = [];
+let filteredPage = 0;
 
 const stopWords = new Set([
   "a",
@@ -193,30 +193,6 @@ function populateControls() {
   }
 }
 
-function populateHotKeywords() {
-  if (!hotKeywordsList) return;
-
-  const key = trackFilter.value || "__all__";
-  const keywords = trackKeywords[key] || trackKeywords.__all__ || [];
-
-  if (!keywords.length) {
-    hotKeywordsList.innerHTML = `<span class="hot-keyword-empty">No keyword suggestions yet.</span>`;
-    return;
-  }
-
-  hotKeywordsList.innerHTML = keywords
-    .slice(0, 10)
-    .map(
-      ({ keyword, count }) => `
-        <button type="button" data-hot-keyword="${escapeHtml(keyword)}">
-          <span>${escapeHtml(keyword)}</span>
-          <small>${count}</small>
-        </button>
-      `,
-    )
-    .join("");
-}
-
 function sessionText(session) {
   return normalize(
     [
@@ -326,8 +302,23 @@ function search(query, exact = false) {
   ).slice(0, MAX_RESULTS);
 }
 
+function posterNumber(session) {
+  const match = /(\d+)$/.exec(session.poster || "");
+  return match ? Number(match[1]) : Infinity;
+}
+
 function filteredSessions() {
-  return sortSessions(applyFilters(conferenceSessions()));
+  // Talks first (by date), then posters ordered by their board number so that
+  // odd (Session A/C) and even (Session B/D) posters interleave instead of the
+  // early-day odd numbers filling the whole capped list.
+  const list = sortSessions(applyFilters(conferenceSessions()));
+  return list.sort((a, b) => {
+    const ap = a.format === "Poster";
+    const bp = b.format === "Poster";
+    if (ap !== bp) return ap ? 1 : -1;
+    if (ap && bp) return posterNumber(a) - posterNumber(b);
+    return 0;
+  });
 }
 
 function highlight(value, query) {
@@ -356,6 +347,7 @@ function snippet(value, query, maxLength = 320) {
 }
 
 function renderSessions(matches, options = {}) {
+  clearPager();
   const query = options.query || "";
   const showConflicts = options.showConflicts || false;
 
@@ -447,14 +439,52 @@ function renderSearchAnswer(query, matches) {
 
 const FILTERED_MAX = 80;
 
+function clearPager() {
+  if (pagerEl) pagerEl.innerHTML = "";
+}
+
+function renderPager(totalPages) {
+  if (!pagerEl) return;
+  if (totalPages <= 1) {
+    pagerEl.innerHTML = "";
+    return;
+  }
+  pagerEl.innerHTML = `
+    <button type="button" class="pager-btn" data-page="prev" ${filteredPage === 0 ? "disabled" : ""}>← Prev</button>
+    <span class="pager-info">Page ${filteredPage + 1} of ${totalPages}</span>
+    <button type="button" class="pager-btn" data-page="next" ${filteredPage >= totalPages - 1 ? "disabled" : ""}>Next →</button>
+  `;
+}
+
+function renderFilteredPage() {
+  const all = filteredList;
+  const type = typeFilter ? typeFilter.value : "all";
+  const where = [trackFilter.value, roomFilter.value].filter(Boolean);
+
+  const totalPages = Math.max(1, Math.ceil(all.length / FILTERED_MAX));
+  filteredPage = Math.min(Math.max(filteredPage, 0), totalPages - 1);
+  const start = filteredPage * FILTERED_MAX;
+  const pageItems = all.slice(start, start + FILTERED_MAX);
+
+  const scope = type === "poster" ? "posters" : type === "talk" ? "talks" : "sessions";
+  const whereText = where.length ? ` for <strong>${escapeHtml(where.join(" or "))}</strong>` : "";
+  const range = all.length > FILTERED_MAX ? ` — showing ${start + 1}–${start + pageItems.length}` : "";
+  answerEl.innerHTML = `<strong>${all.length} ${scope}</strong>${whereText}${range}.`;
+
+  renderSessions(pageItems);
+  renderPager(totalPages);
+}
+
 function renderFilteredSessions() {
   const type = typeFilter ? typeFilter.value : "all";
   const where = [trackFilter.value, roomFilter.value].filter(Boolean);
   const active = type !== "all" || where.length;
 
+  clearPager();
   if (!active) {
     answerEl.textContent = "Enter a keyword query, choose a track or type, or choose a date and time to find sessions.";
     resultsEl.innerHTML = "";
+    filteredList = [];
     return;
   }
 
@@ -462,14 +492,13 @@ function renderFilteredSessions() {
   if (!all.length) {
     answerEl.textContent = `No results for ${[type !== "all" ? `${type}s` : "", ...where].filter(Boolean).join(" · ")}. Try fewer filters.`;
     resultsEl.innerHTML = "";
+    filteredList = [];
     return;
   }
 
-  const scope = type === "poster" ? "posters" : type === "talk" ? "talks" : "sessions";
-  const whereText = where.length ? ` for <strong>${escapeHtml(where.join(" or "))}</strong>` : "";
-  const trunc = all.length > FILTERED_MAX ? ` — showing first ${FILTERED_MAX}, add a keyword to narrow` : "";
-  answerEl.innerHTML = `<strong>${all.length} ${scope}</strong>${whereText}${trunc}.`;
-  renderSessions(all.slice(0, FILTERED_MAX));
+  filteredList = all;
+  filteredPage = 0;
+  renderFilteredPage();
 }
 
 function sessionsAtTime(date, time, query = "") {
@@ -663,7 +692,6 @@ function applyDeepLink() {
   const track = resolveTrack(label);
   if (track && [...trackFilter.options].some((option) => option.value === track)) {
     trackFilter.value = track;
-    populateHotKeywords();
   }
   if ([...dateSelect.options].some((option) => option.value === date)) {
     dateSelect.value = date;
@@ -679,9 +707,8 @@ function applyDeepLink() {
 
 async function boot() {
   try {
-    const [response, keywordsResponse, postersResponse] = await Promise.all([
+    const [response, postersResponse] = await Promise.all([
       fetch(DATA_PATH),
-      fetch(KEYWORDS_PATH),
       fetch(POSTERS_PATH),
     ]);
     if (!response.ok) throw new Error(`Data load failed: ${response.status}`);
@@ -689,11 +716,7 @@ async function boot() {
     if (postersResponse.ok) {
       sessions = sessions.concat(await postersResponse.json());
     }
-    if (keywordsResponse.ok) {
-      trackKeywords = await keywordsResponse.json();
-    }
     populateControls();
-    populateHotKeywords();
     const all = conferenceSessions();
     const posterCount = all.filter((session) => session.format === "Poster").length;
     const talkCount = all.length - posterCount;
@@ -713,21 +736,12 @@ form.addEventListener("submit", (event) => {
   runSearch(queryInput.value, { exact: false });
 });
 
-hotKeywordsList.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-hot-keyword]");
-  if (!button) return;
-
-  queryInput.value = button.dataset.hotKeyword;
-  runSearch(button.dataset.hotKeyword, { exact: true });
-});
-
 timeForm.addEventListener("submit", (event) => {
   event.preventDefault();
   runTimeSearch();
 });
 
 trackFilter.addEventListener("change", () => {
-  populateHotKeywords();
   syncDateToTrack();
   if (activeQuery) {
     runSearch(activeQuery, { exact: activeExactSearch });
@@ -737,7 +751,6 @@ trackFilter.addEventListener("change", () => {
 });
 
 typeFilter.addEventListener("change", () => {
-  populateHotKeywords();
   if (activeQuery) {
     runSearch(activeQuery, { exact: activeExactSearch });
   } else {
@@ -763,6 +776,14 @@ sortSelect.addEventListener("change", () => {
 
 nowButton.addEventListener("click", runNowMode);
 scheduleButton.addEventListener("click", renderSchedule);
+
+pagerEl.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-page]");
+  if (!button || button.disabled) return;
+  filteredPage += button.dataset.page === "next" ? 1 : -1;
+  renderFilteredPage();
+  answerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 resultsEl.addEventListener("click", (event) => {
   const button = event.target.closest("[data-save-id]");
