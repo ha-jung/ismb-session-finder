@@ -430,9 +430,9 @@ function sessionsAtTime(date, time, query = "") {
         .filter((session) => {
           if (session.date !== date) return false;
           if (!queryMatches(session, query)) return false;
-          const start = timeToMinutes(session.start_time);
-          const end = timeToMinutes(session.end_time);
-          return start <= selected && selected < end;
+          // Treat the chosen time as a start point: show every talk that
+          // starts at or after it on that day.
+          return timeToMinutes(session.start_time) >= selected;
         }),
     ),
     query ? sortSelect.value : "time",
@@ -440,18 +440,18 @@ function sessionsAtTime(date, time, query = "") {
 }
 
 function renderTimeResults(date, time, matches, query = "") {
-  const label = `${formatDate(date)} at ${formatTime(`${time}:00`)}`;
+  const label = `${formatDate(date)} from ${formatTime(`${time}:00`)}`;
   const queryText = query ? ` matching <strong>${escapeHtml(query)}</strong>` : "";
 
   if (!matches.length) {
-    answerEl.innerHTML = `<strong>No sessions found</strong> for ${label}${queryText}. Try another time, keyword, or loosen the filters.`;
+    answerEl.innerHTML = `<strong>No sessions found</strong> for ${label} onwards${queryText}. Try another time, keyword, or loosen the filters.`;
     resultsEl.innerHTML = "";
     return;
   }
 
   answerEl.innerHTML = `
-    <strong>${matches.length} sessions are active</strong>
-    on <strong>${label}</strong>${queryText}.
+    <strong>${matches.length} sessions</strong>
+    on <strong>${label} onwards</strong>${queryText}.
   `;
 
   renderSessions(matches, { query });
@@ -497,13 +497,12 @@ function runNowMode() {
   const active = sessionsAtTime(date, time, cleanQuery);
 
   answerEl.innerHTML = `
-    <strong>Suggested sessions for ${formatDate(date)} at ${formatTime(`${time}:00`)}</strong>.
-    Showing what is active now for the selected conference day${cleanQuery ? ` matching <strong>${escapeHtml(cleanQuery)}</strong>` : ""}.
+    <strong>Suggested sessions for ${formatDate(date)} from ${formatTime(`${time}:00`)} onwards</strong>${cleanQuery ? ` matching <strong>${escapeHtml(cleanQuery)}</strong>` : ""}.
   `;
 
   if (!active.length) {
     resultsEl.innerHTML = "";
-    answerEl.innerHTML += " No active sessions were found at that time.";
+    answerEl.innerHTML += " No upcoming sessions were found from that time.";
     return;
   }
 
@@ -528,6 +527,90 @@ function renderSchedule() {
   renderSessions(saved, { showConflicts: true });
 }
 
+// Map short schedule-grid labels to the full track names used in sessions.json.
+const TRACK_ALIASES = {
+  "tech talks": "Tech Track",
+  "icbo": "International Conference on Biological and Biomedical Ontology 2026",
+  "quantum4life sciences": "Quantum for Life Sciences",
+  "publication session": "Publishing Session",
+  "career symposium": "Computational Biology Careers Symposium",
+  "pathogen data network event": "Pathogen Data Network Forum",
+};
+
+function resolveTrack(label) {
+  if (!label) return null;
+  const alias = TRACK_ALIASES[label.toLowerCase().trim()];
+  if (alias) return alias;
+
+  const tracks = [...new Set(sessions.map((session) => session.track))];
+  const squish = (value) => normalize(value).replace(/ /g, "");
+  const findFor = (text) => {
+    const target = squish(text);
+    if (!target) return null;
+    return (
+      tracks.find((track) => squish(track.split(":")[0]) === target) ||
+      tracks.find((track) => squish(track).startsWith(target)) ||
+      null
+    );
+  };
+
+  return findFor(label) || (label.includes("/") ? findFor(label.split("/")[0]) : null);
+}
+
+function renderTrackSlot(track, date, start, end) {
+  const startMin = start ? timeToMinutes(`${start}:00`) : -Infinity;
+  const endMin = end ? timeToMinutes(`${end}:00`) : Infinity;
+
+  const matches = sortSessions(
+    conferenceSessions().filter((session) => {
+      if (session.track !== track || session.date !== date) return false;
+      const begin = timeToMinutes(session.start_time);
+      return begin >= startMin && begin < endMin;
+    }),
+    "time",
+  );
+
+  const when = start ? ` at ${formatTime(`${start}:00`)}` : "";
+
+  if (!matches.length) {
+    answerEl.innerHTML = `<strong>No talks found</strong> for ${escapeHtml(track)} on ${formatDate(date)}${when}.`;
+    resultsEl.innerHTML = "";
+    return;
+  }
+
+  answerEl.innerHTML = `
+    <strong>${matches.length} talks</strong> in
+    <strong>${escapeHtml(track)}</strong>
+    on <strong>${formatDate(date)}</strong>${when}.
+  `;
+  renderSessions(matches);
+}
+
+// Handle deep links from the schedule page, e.g.
+// index.html?track=HitSeq&date=2026-07-13&start=11:00&end=13:00
+function applyDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const label = params.get("track");
+  const date = params.get("date");
+  if (!label || !date) return false;
+
+  const track = resolveTrack(label);
+  if (track && [...trackFilter.options].some((option) => option.value === track)) {
+    trackFilter.value = track;
+    populateHotKeywords();
+  }
+  if ([...dateSelect.options].some((option) => option.value === date)) {
+    dateSelect.value = date;
+  }
+  const start = params.get("start");
+  if (start && [...timeSelect.options].some((option) => option.value === start)) {
+    timeSelect.value = start;
+  }
+
+  renderTrackSlot(track || label, date, start, params.get("end"));
+  return true;
+}
+
 async function boot() {
   try {
     const [response, keywordsResponse] = await Promise.all([
@@ -543,8 +626,10 @@ async function boot() {
     populateHotKeywords();
     const abstractCount = conferenceSessions().filter((session) => session.abstract).length;
     statusEl.textContent = `${conferenceSessions().length} conference sessions loaded · ${abstractCount} abstracts`;
-    answerEl.textContent = "Enter a keyword query or choose a date and time to find sessions.";
-    resultsEl.innerHTML = "";
+    if (!applyDeepLink()) {
+      answerEl.textContent = "Enter a keyword query or choose a date and time to find sessions.";
+      resultsEl.innerHTML = "";
+    }
   } catch (error) {
     statusEl.textContent = "Could not load the schedule data. Please run this page through a local server.";
     answerEl.textContent = error.message;
@@ -604,18 +689,15 @@ resultsEl.addEventListener("click", (event) => {
   const id = button.dataset.saveId;
   if (savedIds.has(id)) {
     savedIds.delete(id);
+    button.classList.remove("saved");
+    button.textContent = "Save";
   } else {
     savedIds.add(id);
+    button.classList.add("saved");
+    button.textContent = "Saved";
   }
   saveSchedule();
-
-  if (activeQuery) {
-    runSearch(activeQuery, { exact: activeExactSearch });
-  } else if (answerEl.textContent.includes("saved sessions") || answerEl.textContent.includes("My Schedule")) {
-    renderSchedule();
-  } else {
-    runTimeSearch();
-  }
+  // Keep the current list in place — only the toggled card's button changes.
 });
 
 boot();

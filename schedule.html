@@ -41,8 +41,14 @@
   thead th.timehdr{left:0;z-index:3}
   td.cell{padding:8px 9px;font-size:12.5px;line-height:1.3}
   td.empty{background:transparent}
-  .chip{display:block;border-radius:8px;padding:7px 9px;font-weight:600;
-    border-left:3px solid var(--accent);background:var(--accentsoft);color:var(--txt);min-height:100%}
+  .chip{display:flex;align-items:center;justify-content:space-between;gap:6px;
+    border-radius:8px;padding:7px 9px;font-weight:600;text-decoration:none;cursor:pointer;
+    border-left:3px solid var(--accent);background:var(--accentsoft);color:var(--txt);min-height:100%;
+    transition:filter .12s ease, transform .12s ease}
+  .chip .go{opacity:0;color:var(--muted);font-weight:700;transition:opacity .12s ease;flex:0 0 auto}
+  .chip:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .chip:hover .go{opacity:1}
+  .chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .full td{padding:9px 12px;background:var(--break);color:var(--muted);
     font-style:italic;text-align:center;font-size:12.5px;font-weight:500}
   .full.keynote td{background:linear-gradient(90deg,var(--accentsoft),transparent);
@@ -103,8 +109,17 @@ DATA.days.forEach((d,i)=>{
   tabs.appendChild(b);
 });
 
+const MONTHS={January:'01',February:'02',March:'03',April:'04',May:'05',June:'06',
+  July:'07',August:'08',September:'09',October:'10',November:'11',December:'12'};
+function isoFromTitle(title){
+  const m=title.match(/([A-Za-z]+)\s+(\d+),\s+(\d{4})/);
+  if(!m) return '';
+  return `${m[3]}-${MONTHS[m[1]]||'07'}-${String(m[2]).padStart(2,'0')}`;
+}
+
 function render(){
   const day=DATA.days[active];
+  const iso=isoFromTitle(day.title);
   const thead=document.querySelector('#grid thead');
   const tbody=document.querySelector('#grid tbody');
   // header
@@ -126,7 +141,10 @@ function render(){
         if(!c){tds+='<td class="cell empty"></td>';return;}
         seen.add(c);
         const col=colorFor(c);
-        tds+=`<td class="cell"><span class="chip" style="border-left-color:${col};background:${tint(col,0.16)}">${c}</span></td>`;
+        const href=`index.html?track=${encodeURIComponent(c)}&date=${iso}`
+          +`&start=${encodeURIComponent(s.start)}&end=${encodeURIComponent(s.end)}`;
+        tds+=`<td class="cell"><a class="chip" href="${href}" title="View ${c} talks in the Session Finder" `
+          +`style="border-left-color:${col};background:${tint(col,0.16)}">${c}<span class="go">→</span></a></td>`;
       });
       rows+=`<tr>${timeCell}${tds}</tr>`;
     }
