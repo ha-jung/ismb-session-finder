@@ -107,18 +107,6 @@ function tint(hex,a){const n=parseInt(hex.slice(1),16);
 
 const KEY=/keynote|closing|welcome and/i;
 
-let active=0;
-const tabs=document.getElementById('tabs');
-DATA.days.forEach((d,i)=>{
-  const parts=d.title.split(',');
-  const b=document.createElement('button');
-  b.className='tab'+(i===0?' active':'');
-  b.innerHTML=`${parts[0]}<small>${parts.slice(1).join(',').trim()}</small>`;
-  b.onclick=()=>{active=i;[...tabs.children].forEach(t=>t.classList.remove('active'));
-    b.classList.add('active');render();};
-  tabs.appendChild(b);
-});
-
 const MONTHS={January:'01',February:'02',March:'03',April:'04',May:'05',June:'06',
   July:'07',August:'08',September:'09',October:'10',November:'11',December:'12'};
 function isoFromTitle(title){
@@ -126,6 +114,24 @@ function isoFromTitle(title){
   if(!m) return '';
   return `${m[3]}-${MONTHS[m[1]]||'07'}-${String(m[2]).padStart(2,'0')}`;
 }
+
+// Default to today's tab during the conference; clamp to first/last otherwise.
+const dayIsos=DATA.days.map(d=>isoFromTitle(d.title));
+const now=new Date();
+const todayIso=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+let active=dayIsos.indexOf(todayIso);
+if(active<0) active=todayIso>dayIsos[dayIsos.length-1]?dayIsos.length-1:0;
+
+const tabs=document.getElementById('tabs');
+DATA.days.forEach((d,i)=>{
+  const parts=d.title.split(',');
+  const b=document.createElement('button');
+  b.className='tab'+(i===active?' active':'');
+  b.innerHTML=`${parts[0]}<small>${parts.slice(1).join(',').trim()}</small>`;
+  b.onclick=()=>{active=i;[...tabs.children].forEach(t=>t.classList.remove('active'));
+    b.classList.add('active');render();};
+  tabs.appendChild(b);
+});
 
 function render(){
   const day=DATA.days[active];
