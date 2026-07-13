@@ -26,6 +26,7 @@ let activeQuery = "";
 let activeExactSearch = false;
 let filteredList = [];
 let filteredPage = 0;
+let inScheduleView = false;
 
 const stopWords = new Set([
   "a",
@@ -348,6 +349,7 @@ function snippet(value, query, maxLength = 320) {
 
 function renderSessions(matches, options = {}) {
   clearPager();
+  inScheduleView = false;
   const query = options.query || "";
   const showConflicts = options.showConflicts || false;
 
@@ -607,6 +609,7 @@ function renderSchedule() {
   `;
 
   renderSessions(saved, { showConflicts: true });
+  inScheduleView = true;
 }
 
 // Map short schedule-grid labels to the full track names used in sessions.json.
@@ -792,15 +795,20 @@ resultsEl.addEventListener("click", (event) => {
   const id = button.dataset.saveId;
   if (savedIds.has(id)) {
     savedIds.delete(id);
-    button.classList.remove("saved");
-    button.textContent = "Save";
   } else {
     savedIds.add(id);
-    button.classList.add("saved");
-    button.textContent = "Saved";
   }
   saveSchedule();
-  // Keep the current list in place — only the toggled card's button changes.
+
+  if (inScheduleView) {
+    // In My Schedule, re-render so the removed card and time-conflict flags update.
+    renderSchedule();
+  } else {
+    // Elsewhere, keep the list in place — only reflect the new state on this card.
+    const saved = savedIds.has(id);
+    button.classList.toggle("saved", saved);
+    button.textContent = saved ? "Saved" : "Save";
+  }
 });
 
 boot();
