@@ -135,6 +135,8 @@ function conferenceSessions() {
 }
 
 function isOverlapping(a, b) {
+  // Posters are browse-any-time, so they never count as a scheduling conflict.
+  if (a.format === "Poster" || b.format === "Poster") return false;
   if (a.id === b.id || a.date !== b.date) return false;
   const aStart = timeToMinutes(a.start_time);
   const aEnd = timeToMinutes(a.end_time);
