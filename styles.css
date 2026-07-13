@@ -375,6 +375,19 @@ mark {
   border-radius: 999px;
 }
 
+.pill-floor {
+  gap: 4px;
+  color: var(--accent-dark);
+  background: #e2f3f0;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+.pill-floor::before {
+  content: "▲";
+  font-size: 0.7em;
+}
+
 .track {
   margin-top: 10px;
   color: var(--muted);

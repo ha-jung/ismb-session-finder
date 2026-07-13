@@ -91,6 +91,24 @@ function timeToMinutes(timeValue) {
   return hour * 60 + minute;
 }
 
+// Washington Hilton floor for each meeting room (from the venue's stacked floor plan).
+function floorFor(room) {
+  if (!room) return "";
+  const r = room.toLowerCase();
+  if (r.includes("9-10") || r.includes("room 9") || r.includes("columbia")) return "Terrace Level";
+  if (
+    r.includes("international ballroom") ||
+    r.includes("georgetown") ||
+    r.includes("cabinet") ||
+    r.includes("monroe") ||
+    r.includes("jefferson") ||
+    r.includes("lincoln")
+  ) {
+    return "Concourse Level";
+  }
+  return "";
+}
+
 function escapeHtml(value) {
   return value.replace(/[&<>"']/g, (char) => {
     const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -348,6 +366,7 @@ function renderSessions(matches, options = {}) {
             <span class="pill">${formatDate(session.date)}</span>
             <span class="pill">${formatTime(session.start_time)}-${formatTime(session.end_time)}</span>
             ${session.room ? `<span class="pill">${escapeHtml(session.room)}</span>` : ""}
+            ${floorFor(session.room) ? `<span class="pill pill-floor">${escapeHtml(floorFor(session.room))}</span>` : ""}
           </div>
           <div class="track">${track}</div>
           ${people ? `<div class="presenter">${escapeHtml(people)}</div>` : ""}
