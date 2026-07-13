@@ -170,7 +170,11 @@ function populateControls() {
     .join("")}`;
 
   roomFilter.innerHTML = `<option value="">All rooms</option>${rooms
-    .map((room) => `<option value="${escapeHtml(room)}">${escapeHtml(room)}</option>`)
+    .map((room) => {
+      const floor = floorFor(room);
+      const label = floor ? `${room} — ${floor}` : room;
+      return `<option value="${escapeHtml(room)}">${escapeHtml(label)}</option>`;
+    })
     .join("")}`;
 
   const firstTalk = availableSessions.find((session) => session.start_time);
@@ -273,9 +277,14 @@ function scoreSession(session, rawQuery, exact = false) {
 }
 
 function applyFilters(list) {
+  const track = trackFilter.value;
+  const room = roomFilter.value;
   return list.filter((session) => {
-    if (trackFilter.value && session.track !== trackFilter.value) return false;
-    if (roomFilter.value && session.room !== roomFilter.value) return false;
+    // Track and room are usually a fixed pair for the day, so combine them
+    // with OR: a session passes if it matches either selected value.
+    if (track && room) return session.track === track || session.room === room;
+    if (track) return session.track === track;
+    if (room) return session.room === room;
     return true;
   });
 }
@@ -426,14 +435,14 @@ function renderFilteredSessions() {
   }
 
   if (!matches.length) {
-    answerEl.textContent = `No sessions found for ${filters.join(" · ")}. Try fewer filters.`;
+    answerEl.textContent = `No sessions found for ${filters.join(" or ")}. Try fewer filters.`;
     resultsEl.innerHTML = "";
     return;
   }
 
   answerEl.innerHTML = `
     <strong>${matches.length} sessions found</strong>
-    for <strong>${escapeHtml(filters.join(" · "))}</strong>.
+    for <strong>${escapeHtml(filters.join(" or "))}</strong>.
   `;
   renderSessions(matches);
 }
