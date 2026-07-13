@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ISMB 2026 Session Finder</title>
-    <link rel="stylesheet" href="./styles.css?v=3" />
+    <link rel="stylesheet" href="./styles.css?v=4" />
   </head>
   <body>
     <main class="app-shell">
@@ -43,6 +43,13 @@
         </section>
 
         <section class="filters" aria-label="Search filters">
+          <label for="type-filter">Type</label>
+          <select id="type-filter">
+            <option value="all">Talks &amp; posters</option>
+            <option value="talk">Talks only</option>
+            <option value="poster">Posters only</option>
+          </select>
+
           <label for="track-filter">Track</label>
           <select id="track-filter"></select>
 

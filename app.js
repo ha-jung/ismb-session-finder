@@ -1,4 +1,5 @@
 const DATA_PATH = "./sessions.json";
+const POSTERS_PATH = "./posters.json";
 const KEYWORDS_PATH = "./track_keywords.json";
 const MAX_RESULTS = 40;
 const STORAGE_KEY = "ismb2026_saved_sessions";
@@ -11,6 +12,7 @@ const dateSelect = document.querySelector("#date-select");
 const timeSelect = document.querySelector("#time-select");
 const trackFilter = document.querySelector("#track-filter");
 const roomFilter = document.querySelector("#room-filter");
+const typeFilter = document.querySelector("#type-filter");
 const sortSelect = document.querySelector("#sort-select");
 const nowButton = document.querySelector("#now-button");
 const scheduleButton = document.querySelector("#schedule-button");
@@ -107,6 +109,13 @@ function floorFor(room) {
     return "Concourse Level";
   }
   return "";
+}
+
+// Compact author line for poster cards: first few authors, then "et al.".
+function posterAuthors(value) {
+  if (!value) return "";
+  const parts = value.split(";").map((s) => s.trim()).filter(Boolean);
+  return parts.length > 3 ? `${parts.slice(0, 3).join("; ")} et al.` : parts.join("; ");
 }
 
 function escapeHtml(value) {
@@ -279,7 +288,11 @@ function scoreSession(session, rawQuery, exact = false) {
 function applyFilters(list) {
   const track = trackFilter.value;
   const room = roomFilter.value;
+  const type = typeFilter ? typeFilter.value : "all";
   return list.filter((session) => {
+    const isPoster = session.format === "Poster";
+    if (type === "poster" && !isPoster) return false;
+    if (type === "talk" && isPoster) return false;
     // Track and room are usually a fixed pair for the day, so combine them
     // with OR: a session passes if it matches either selected value.
     if (track && room) return session.track === track || session.room === room;
@@ -360,7 +373,10 @@ function renderSessions(matches, options = {}) {
       const fullAbstract = query
         ? highlight(session.abstract || "", query)
         : escapeHtml(session.abstract || "");
-      const people = [session.presenter, session.format].filter(Boolean).join(" · ");
+      const isPoster = session.format === "Poster";
+      const people = isPoster
+        ? posterAuthors(session.authors)
+        : [session.presenter, session.format].filter(Boolean).join(" · ");
       const authors = session.authors ? escapeHtml(session.authors) : "";
 
       return `
@@ -372,8 +388,13 @@ function renderSessions(matches, options = {}) {
             </button>
           </div>
           <div class="meta">
+            ${isPoster ? `<span class="pill pill-poster">Poster ${escapeHtml(session.poster || "")}</span>` : ""}
             <span class="pill">${formatDate(session.date)}</span>
-            <span class="pill">${formatTime(session.start_time)}-${formatTime(session.end_time)}</span>
+            ${
+              isPoster
+                ? `<span class="pill">Session ${escapeHtml(session.session || "")} · ${escapeHtml(session.poster_windows || "")}</span>`
+                : `<span class="pill">${formatTime(session.start_time)}-${formatTime(session.end_time)}</span>`
+            }
             ${session.room ? `<span class="pill">${escapeHtml(session.room)}</span>` : ""}
             ${floorFor(session.room) ? `<span class="pill pill-floor">${escapeHtml(floorFor(session.room))}</span>` : ""}
           </div>
@@ -424,27 +445,31 @@ function renderSearchAnswer(query, matches) {
   renderSessions(matches, { query });
 }
 
+const FILTERED_MAX = 80;
+
 function renderFilteredSessions() {
-  const matches = filteredSessions();
-  const filters = [trackFilter.value, roomFilter.value].filter(Boolean);
+  const type = typeFilter ? typeFilter.value : "all";
+  const where = [trackFilter.value, roomFilter.value].filter(Boolean);
+  const active = type !== "all" || where.length;
 
-  if (!filters.length) {
-    answerEl.textContent = "Enter a keyword query, choose a track, or choose a date and time to find sessions.";
+  if (!active) {
+    answerEl.textContent = "Enter a keyword query, choose a track or type, or choose a date and time to find sessions.";
     resultsEl.innerHTML = "";
     return;
   }
 
-  if (!matches.length) {
-    answerEl.textContent = `No sessions found for ${filters.join(" or ")}. Try fewer filters.`;
+  const all = filteredSessions();
+  if (!all.length) {
+    answerEl.textContent = `No results for ${[type !== "all" ? `${type}s` : "", ...where].filter(Boolean).join(" · ")}. Try fewer filters.`;
     resultsEl.innerHTML = "";
     return;
   }
 
-  answerEl.innerHTML = `
-    <strong>${matches.length} sessions found</strong>
-    for <strong>${escapeHtml(filters.join(" or "))}</strong>.
-  `;
-  renderSessions(matches);
+  const scope = type === "poster" ? "posters" : type === "talk" ? "talks" : "sessions";
+  const whereText = where.length ? ` for <strong>${escapeHtml(where.join(" or "))}</strong>` : "";
+  const trunc = all.length > FILTERED_MAX ? ` — showing first ${FILTERED_MAX}, add a keyword to narrow` : "";
+  answerEl.innerHTML = `<strong>${all.length} ${scope}</strong>${whereText}${trunc}.`;
+  renderSessions(all.slice(0, FILTERED_MAX));
 }
 
 function sessionsAtTime(date, time, query = "") {
@@ -614,6 +639,19 @@ function renderTrackSlot(track, date, start, end) {
   renderSessions(matches);
 }
 
+// When a track is chosen, point the date picker at that track's first day.
+function syncDateToTrack() {
+  const track = trackFilter.value;
+  if (!track) return;
+  const dates = conferenceSessions()
+    .filter((session) => session.track === track)
+    .map((session) => session.date)
+    .sort();
+  if (dates.length && [...dateSelect.options].some((option) => option.value === dates[0])) {
+    dateSelect.value = dates[0];
+  }
+}
+
 // Handle deep links from the schedule page, e.g.
 // index.html?track=HitSeq&date=2026-07-13&start=11:00&end=13:00
 function applyDeepLink() {
@@ -641,19 +679,25 @@ function applyDeepLink() {
 
 async function boot() {
   try {
-    const [response, keywordsResponse] = await Promise.all([
+    const [response, keywordsResponse, postersResponse] = await Promise.all([
       fetch(DATA_PATH),
       fetch(KEYWORDS_PATH),
+      fetch(POSTERS_PATH),
     ]);
     if (!response.ok) throw new Error(`Data load failed: ${response.status}`);
     sessions = await response.json();
+    if (postersResponse.ok) {
+      sessions = sessions.concat(await postersResponse.json());
+    }
     if (keywordsResponse.ok) {
       trackKeywords = await keywordsResponse.json();
     }
     populateControls();
     populateHotKeywords();
-    const abstractCount = conferenceSessions().filter((session) => session.abstract).length;
-    statusEl.textContent = `${conferenceSessions().length} conference sessions loaded · ${abstractCount} abstracts`;
+    const all = conferenceSessions();
+    const posterCount = all.filter((session) => session.format === "Poster").length;
+    const talkCount = all.length - posterCount;
+    statusEl.textContent = `${talkCount} talks · ${posterCount} posters loaded`;
     if (!applyDeepLink()) {
       answerEl.textContent = "Enter a keyword query or choose a date and time to find sessions.";
       resultsEl.innerHTML = "";
@@ -683,6 +727,16 @@ timeForm.addEventListener("submit", (event) => {
 });
 
 trackFilter.addEventListener("change", () => {
+  populateHotKeywords();
+  syncDateToTrack();
+  if (activeQuery) {
+    runSearch(activeQuery, { exact: activeExactSearch });
+  } else {
+    renderFilteredSessions();
+  }
+});
+
+typeFilter.addEventListener("change", () => {
   populateHotKeywords();
   if (activeQuery) {
     runSearch(activeQuery, { exact: activeExactSearch });
